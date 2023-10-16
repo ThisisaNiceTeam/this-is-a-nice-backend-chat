@@ -8,9 +8,10 @@ assignees: ''
 ---
 
 ## Description
+리팩토링 내용 설명
 
 ## Todo
-[ ] todo
-[ ] todo
+- [ ] todo
+- [ ] todo
 
 ## ETC

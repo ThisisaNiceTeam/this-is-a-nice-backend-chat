@@ -11,8 +11,8 @@ assignees: ''
 설명작성
 
 ## Todo
-[ ] todo
-[ ] todo
+- [ ] todo
+- [ ] todo
 
 ## ETC
 기타사항

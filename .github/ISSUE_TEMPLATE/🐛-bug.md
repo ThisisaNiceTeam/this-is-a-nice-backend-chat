@@ -11,8 +11,8 @@ assignees: ''
 버그설명
 
 ## Todo
-[ ] todo
-[ ] todo
+- [ ] todo
+- [ ] todo
 
 ## ETC
 기타사항
