@@ -1,9 +1,10 @@
-package com.thisisaniceteam.chat.domain.userprofileimage.model;
+package com.thisisaniceteam.chat.model;
 
-import com.thisisaniceteam.chat.domain.member.model.Member;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class UserProfileImage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

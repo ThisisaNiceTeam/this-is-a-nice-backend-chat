@@ -1,9 +1,10 @@
-package com.thisisaniceteam.chat.domain.useragreement.model;
+package com.thisisaniceteam.chat.model;
 
-import com.thisisaniceteam.chat.domain.member.model.Member;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class UserAgreement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
