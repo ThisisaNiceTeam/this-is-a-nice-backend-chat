@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 public class UserProfileImage {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userProfileImageId;
 
     @OneToOne(fetch = FetchType.LAZY)
