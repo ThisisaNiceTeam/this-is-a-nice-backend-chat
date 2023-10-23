@@ -1,8 +1,5 @@
-package com.thisisaniceteam.chat.domain.member.model;
+package com.thisisaniceteam.chat.model;
 
-import com.thisisaniceteam.chat.domain.chatroom.model.ChatRoom;
-import com.thisisaniceteam.chat.domain.useragreement.model.UserAgreement;
-import com.thisisaniceteam.chat.domain.userprofileimage.model.UserProfileImage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

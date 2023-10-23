@@ -1,4 +1,4 @@
-package com.thisisaniceteam.chat.domain.common;
+package com.thisisaniceteam.chat.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

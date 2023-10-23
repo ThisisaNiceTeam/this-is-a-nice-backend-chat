@@ -1,6 +1,6 @@
-package com.thisisaniceteam.chat.domain.userprofileimage.model;
+package com.thisisaniceteam.chat.model;
 
-import com.thisisaniceteam.chat.domain.member.model.Member;
+import com.thisisaniceteam.chat.model.Member;
 import jakarta.persistence.*;
 
 @Entity
