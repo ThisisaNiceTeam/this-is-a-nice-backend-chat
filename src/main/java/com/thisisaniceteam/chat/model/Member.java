@@ -16,7 +16,7 @@ public class Member extends BaseEntity {
     private Long memberId;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ChatRoom> chatRooms = new ArrayList<>();
+    private List<MemberChatRoom> memberChatRooms = new ArrayList<>();
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MemberAgreement memberAgreement;
