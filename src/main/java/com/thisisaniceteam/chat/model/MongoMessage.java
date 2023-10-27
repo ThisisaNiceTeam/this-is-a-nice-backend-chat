@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Message {
+public class MongoMessage {
     @Id
     private ObjectId id;
     private String content;

@@ -10,17 +10,17 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ChatRoom> chatRooms = new ArrayList<>();
+    private List<MemberChatRoom> chatRooms = new ArrayList<>();
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
-    private UserAgreement userAgreement;
+    private MemberAgreement memberAgreement;
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
-    private UserProfileImage userProfileImage;
+    private MemberProfileImage memberProfileImage;
 }

@@ -1,14 +1,18 @@
 package com.thisisaniceteam.chat.model;
 
-import com.thisisaniceteam.chat.model.Member;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-public class UserAgreement {
+@Getter
+@NoArgsConstructor
+public class MemberAgreement extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userAgreementId;
+    private Long memberAgreementId;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 }
