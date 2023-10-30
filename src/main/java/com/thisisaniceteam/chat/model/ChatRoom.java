@@ -14,9 +14,8 @@ public class ChatRoom extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatRoomId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_chat_room_id")
-    private MemberChatRoom memberChatRoom;
+    @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.ALL)
+    private ArrayList<MemberChatRoom> memberChatRoom;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private ArrayList<ChatRoomMessage> chatRoomMessages = new ArrayList<>();
