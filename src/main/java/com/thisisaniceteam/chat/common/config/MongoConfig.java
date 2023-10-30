@@ -1,4 +1,4 @@
-package com.thisisaniceteam.chat.config;
+package com.thisisaniceteam.chat.common.config;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -24,7 +24,7 @@ public class MongoConfig {
     }
 
     @Bean
-    public MongoTemplate mongoTemplate() throws Exception {
+    public MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongoClient(), "test");
     }
 }
