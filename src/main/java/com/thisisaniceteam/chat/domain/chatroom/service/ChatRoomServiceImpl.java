@@ -4,6 +4,7 @@ import com.thisisaniceteam.chat.domain.chatroom.repository.ChatRoomRepository;
 import com.thisisaniceteam.chat.domain.memberchatroom.service.MemberChatRoomService;
 import com.thisisaniceteam.chat.model.ChatRoom;
 import com.thisisaniceteam.chat.model.Member;
+import com.thisisaniceteam.chat.model.dto.CreateChatRoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,16 @@ import java.util.Optional;
 public class ChatRoomServiceImpl implements ChatRoomService{
     private final ChatRoomRepository chatRoomRepository;
     private final MemberChatRoomService memberChatRoomService;
+
+    @Override
+    public CreateChatRoomResponse createChatRoom(Member member) {
+        // 새로운 채팅방 생성
+        ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom());
+        // 채팅방과 회원의 연관관계 설정
+        memberChatRoomService.createMemberChatRoom(member, chatRoom);
+        // 채팅방 생성 응답값 반환
+        return CreateChatRoomResponse.of(chatRoom.getChatRoomId());
+    }
 
     @Override
     public void connectChatRoom(Member member) {
