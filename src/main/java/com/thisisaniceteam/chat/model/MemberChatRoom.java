@@ -19,4 +19,9 @@ public class MemberChatRoom extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
+
+    public void addMemberAndChatRoom(Member member, ChatRoom chatRoom) {
+        this.member = member;
+        this.chatRoom = chatRoom;
+    }
 }
