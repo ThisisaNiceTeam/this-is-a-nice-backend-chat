@@ -7,12 +7,19 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(
+        name = "message", indexes = {
+        @Index(name = "chat_room_id", columnList = "chatRoomId"),
+        @Index(name = "member_id", columnList = "memberId")
+})
 public class Message extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private String memberId;
+
+    private String chatRoomId;
+
+    private Boolean isRead;
 }

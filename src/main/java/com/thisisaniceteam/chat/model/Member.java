@@ -23,7 +23,4 @@ public class Member extends BaseEntity {
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MemberProfileImage memberProfileImage;
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private ArrayList<Message> messages = new ArrayList<>();
 }
