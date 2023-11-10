@@ -1,7 +1,7 @@
 package com.thisisaniceteam.chat.domain.message.service;
 
-import org.springframework.stereotype.Service;
+import com.thisisaniceteam.chat.model.Message;
 
-@Service
 public interface MessageService {
+    void createMessage(Message message);
 }
