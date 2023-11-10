@@ -35,7 +35,6 @@ dependencies {
 
 	// Database
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 	// Security
 	implementation "org.springframework.boot:spring-boot-starter-security"
