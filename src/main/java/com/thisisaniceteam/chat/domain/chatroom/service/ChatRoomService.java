@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public interface ChatRoomService {
     // 채팅 방 생성
-    CreateChatRoomResponse createChatRoom(Member member);
+    CreateChatRoomResponse createChatRoom(Long memberId);
 
     // 대기 중인 채팅방에 해당 회원 추가하기
-    void connectChatRoom(Member member);
+    void connectChatRoom(Long memberId);
 
     // 보유한 채팅방 모두 가져오기
     ArrayList<ChatRoom> getChatRoomList(Member member);

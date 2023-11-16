@@ -20,23 +20,24 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     private final MemberChatRoomService memberChatRoomService;
 
     @Override
-    public CreateChatRoomResponse createChatRoom(Member member) {
+    public CreateChatRoomResponse createChatRoom(Long memberId) {
         // 새로운 채팅방 생성
-        ChatRoom chatRoom = chatRoomRepository.save(new ChatRoom());
+        ChatRoom chatRoom = ChatRoom.createChatRoom();
+        chatRoomRepository.save(chatRoom);
         // 채팅방과 회원의 연관관계 설정
-        memberChatRoomService.createMemberChatRoom(member, chatRoom);
+        memberChatRoomService.createMemberChatRoom(memberId, chatRoom);
         // 채팅방 생성 응답값 반환
         return CreateChatRoomResponse.of(chatRoom.getChatRoomId());
     }
 
     @Override
-    public void connectChatRoom(Member member) {
+    public void connectChatRoom(Long memberId) {
         // 가장 오래전에 만들어진 대기상태의 채팅방 가져오기
         Optional<ChatRoom> chatRoomStateIsReadyForConnect = chatRoomRepository.getChatRoomStateIsReadyForConnect();
         if (chatRoomStateIsReadyForConnect.isPresent()) {
             ChatRoom chatRoom = chatRoomStateIsReadyForConnect.get();
             // 채팅방과 회원 사이 연관관계 매핑하기
-            memberChatRoomService.createMemberChatRoom(member, chatRoom);
+            memberChatRoomService.createMemberChatRoom(memberId, chatRoom);
         }
     }
 
