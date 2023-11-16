@@ -18,6 +18,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
         registry
                 .addHandler(webSocketHandler, "/ws/chat")
                 .addInterceptors(handShakeInterceptor)
-                .setAllowedOrigins("*");
+                .setAllowedOrigins("*")
+                .withSockJS();
     }
 }
