@@ -12,6 +12,9 @@ public class MemberChatRoom extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberChatRoomId;
 
+    private String memberChatRoomSession;
+    private String chatRoomName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -23,5 +26,9 @@ public class MemberChatRoom extends BaseEntity {
     public void addMemberAndChatRoom(Member member, ChatRoom chatRoom) {
         this.member = member;
         this.chatRoom = chatRoom;
+    }
+
+    public void updateChatRoomName(String chatRoomName) {
+        this.chatRoomName = chatRoomName;
     }
 }
