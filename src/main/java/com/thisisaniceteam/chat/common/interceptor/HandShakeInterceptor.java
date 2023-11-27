@@ -1,29 +1,37 @@
 package com.thisisaniceteam.chat.common.interceptor;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.server.HandshakeInterceptor;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 import java.util.Map;
 
 @Component
-public class HandShakeInterceptor implements HandshakeInterceptor {
+@Slf4j
+public class HandShakeInterceptor extends HttpSessionHandshakeInterceptor {
 
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) {
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+        log.info("Before handShake");
+
+        // Parameter 로 넘어노는 userId 를 session attribute에 넣어줬다. 추후에 parameter 가 아닌 토큰 검증 방식으로 변경 예정
+        // TODO
         if (request instanceof ServletServerHttpRequest servletServerHttpRequest) {
-            HttpSession session = servletServerHttpRequest.getServletRequest().getSession();
-            attributes.put("session", session);
+            HttpServletRequest servletRequest = servletServerHttpRequest.getServletRequest();
+            String userId = servletRequest.getParameter("userId");
+            attributes.put("userId", userId);
         }
-        return true;
+
+        return super.beforeHandshake(request, response, wsHandler, attributes);
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
-
+        log.info("After HandShake");
     }
 }
