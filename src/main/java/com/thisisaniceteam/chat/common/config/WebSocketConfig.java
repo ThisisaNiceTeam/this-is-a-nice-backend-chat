@@ -16,9 +16,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry
-                .addHandler(webSocketHandler, "/ws/chat")
-                .addInterceptors(handShakeInterceptor)
-                .setAllowedOrigins("*")
-                .withSockJS();
+                .addHandler(webSocketHandler, "/room")
+                .setAllowedOrigins("*");
+//                .addInterceptors(handShakeInterceptor)
+//                .setAllowedOrigins("*")
+//                .withSockJS();
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,11 +19,11 @@ public class ChatRoom extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private RoomState roomState;
 
-    @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.ALL)
-    private ArrayList<MemberChatRoom> memberChatRoom;
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<MemberChatRoom> memberChatRoom = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-    private ArrayList<WebSocket> webSockets;
+    private List<WebSocket> webSockets = new ArrayList<>();
 
     public static ChatRoom createChatRoom() {
         return new ChatRoomBuilder()
@@ -31,6 +32,14 @@ public class ChatRoom extends BaseEntity{
     }
 
     public void roomIsReady() {
+        this.roomState = RoomState.COMPLETED;
+    }
+
+    public void roomIsRemoved() {
+        this.roomState = RoomState.REMOVED;
+    }
+
+    public void roomIsCompleted() {
         this.roomState = RoomState.COMPLETED;
     }
 }

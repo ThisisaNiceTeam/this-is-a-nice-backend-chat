@@ -4,7 +4,8 @@ import com.thisisaniceteam.chat.domain.chatroom.repository.ChatRoomRepository;
 import com.thisisaniceteam.chat.domain.memberchatroom.service.MemberChatRoomService;
 import com.thisisaniceteam.chat.model.ChatRoom;
 import com.thisisaniceteam.chat.model.Member;
-import com.thisisaniceteam.chat.model.dto.CreateChatRoomResponse;
+import com.thisisaniceteam.chat.model.MemberChatRoom;
+import com.thisisaniceteam.chat.model.RoomState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +21,8 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     private final MemberChatRoomService memberChatRoomService;
 
     @Override
-    public boolean MemberToChatRoom(ChatRoom chatRoom, Member member) {
-        memberChatRoomService.createMemberChatRoom(member, chatRoom);
-        chatRoom.roomIsReady();
-
-        return true;
+    public MemberChatRoom MemberToChatRoom(ChatRoom chatRoom, Member member) {
+        return memberChatRoomService.createMemberChatRoom(member, chatRoom);
     }
 
     @Override
@@ -41,6 +39,16 @@ public class ChatRoomServiceImpl implements ChatRoomService{
 
     @Override
     public Optional<ChatRoom> getWaitedChatRoom() {
-        return chatRoomRepository.getWaitedChatRoom();
+        return chatRoomRepository.getChatRoomByRoomStateOrderByCreatedAtDesc(RoomState.WAIT);
+    }
+
+    @Override
+    public ChatRoom createChatRoom() {
+        return chatRoomRepository.save(ChatRoom.createChatRoom());
+    }
+
+    @Override
+    public void updateChatRoomState(ChatRoom chatRoom) {
+        chatRoomRepository.save(chatRoom);
     }
 }
