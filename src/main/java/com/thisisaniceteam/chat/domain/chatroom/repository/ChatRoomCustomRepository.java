@@ -13,4 +13,6 @@ public interface ChatRoomCustomRepository {
 
     // 회원이 갖는 모든 채팅방 리스트 가져오기
     Optional<ArrayList<ChatRoom>> getChatRoomByMember(Member member);
+
+    Optional<ChatRoom> getWaitedChatRoom();
 }

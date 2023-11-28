@@ -3,6 +3,7 @@ package com.thisisaniceteam.chat.domain.chatroom.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.thisisaniceteam.chat.model.ChatRoom;
 import com.thisisaniceteam.chat.model.Member;
+import com.thisisaniceteam.chat.model.RoomState;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -13,9 +14,10 @@ import static com.thisisaniceteam.chat.model.QMember.member;
 import static com.thisisaniceteam.chat.model.QMemberChatRoom.*;
 
 @RequiredArgsConstructor
-public class ChatRoomRepositoryImpl implements ChatRoomCustomRepository{
+public class ChatRoomRepositoryImpl implements ChatRoomCustomRepository {
 
     private final JPAQueryFactory queryFactory;
+
     @Override
     public Optional<ChatRoom> getChatRoomStateIsReadyForConnect() {
         ChatRoom result = queryFactory.selectFrom(chatRoom)
@@ -37,5 +39,15 @@ public class ChatRoomRepositoryImpl implements ChatRoomCustomRepository{
                 .fetch();
 
         return Optional.of(result);
+    }
+
+    @Override
+    public Optional<ChatRoom> getWaitedChatRoom() {
+        ChatRoom result = queryFactory.selectFrom(chatRoom)
+                .where(chatRoom.roomState.eq(RoomState.WAIT))
+                .orderBy(chatRoom.createdAt.desc())
+                .fetchFirst();
+
+        return Optional.ofNullable(result);
     }
 }

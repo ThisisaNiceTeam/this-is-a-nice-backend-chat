@@ -19,13 +19,12 @@ public class MemberChatRoomServiceImpl implements MemberChatRoomService{
     private final MemberRepository memberRepository;
 
     @Override
-    public void createMemberChatRoom(Long memberId, ChatRoom chatRoom) {
+    public void createMemberChatRoom(Member member, ChatRoom chatRoom) {
         // 채팅방-회원 연관관계 엔티티 생성
         MemberChatRoom memberChatRoom = new MemberChatRoom();
 
         // 연관관계 매핑
-        Optional<Member> member = memberRepository.findById(memberId);
-        memberChatRoom.addMemberAndChatRoom(member.get(), chatRoom);
+        memberChatRoom.addMemberAndChatRoom(member, chatRoom);
         // 저장
         memberChatRoomRepository.save(memberChatRoom);
     }

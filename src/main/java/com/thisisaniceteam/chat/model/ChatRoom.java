@@ -21,9 +21,16 @@ public class ChatRoom extends BaseEntity{
     @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.ALL)
     private ArrayList<MemberChatRoom> memberChatRoom;
 
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private ArrayList<WebSocket> webSockets;
+
     public static ChatRoom createChatRoom() {
         return new ChatRoomBuilder()
                 .roomState(RoomState.WAIT)
                 .build();
+    }
+
+    public void roomIsReady() {
+        this.roomState = RoomState.COMPLETED;
     }
 }

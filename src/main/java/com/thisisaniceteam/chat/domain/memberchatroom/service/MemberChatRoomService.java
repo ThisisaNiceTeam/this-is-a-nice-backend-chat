@@ -4,5 +4,5 @@ import com.thisisaniceteam.chat.model.ChatRoom;
 import com.thisisaniceteam.chat.model.Member;
 
 public interface MemberChatRoomService {
-    void createMemberChatRoom(Long memberId, ChatRoom chatRoom);
+    void createMemberChatRoom(Member member, ChatRoom chatRoom);
 }
