@@ -58,8 +58,9 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     }
 
     @Override
-    public List<Long> getWebSocketSessionIdInUse(ChatRoom chatRoom, Chat chat) {
+    public List<Long> getWebSocketSessionIdInUse(Long chatRoomId, Chat chat) {
         ArrayList<Long> sessionIdList = new ArrayList<>();
+        ChatRoom chatRoom = chatRoomRepository.getChatRoomWithWebSocketSessions(chatRoomId);
         Set<WebSocket> webSockets = chatRoom.getWebSockets();
 
         if (!webSockets.isEmpty()) {

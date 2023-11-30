@@ -50,4 +50,11 @@ public class ChatRoomRepositoryImpl implements ChatRoomCustomRepository {
 
         return Optional.ofNullable(result);
     }
+
+    @Override
+    public ChatRoom getChatRoomWithWebSocketSessions(Long chatRoomId) {
+        return queryFactory.selectFrom(chatRoom)
+                .where(chatRoom.chatRoomId.eq(chatRoomId))
+                .fetchFirst();
+    }
 }

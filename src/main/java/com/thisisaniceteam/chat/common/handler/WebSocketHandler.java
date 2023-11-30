@@ -41,22 +41,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
          */
         Chat chat = Utils.getObject(textMessage.getPayload());
         chat.setSender(session.getId());
-        Optional<ChatRoom> chatRoomById = chatRoomService.getChatRoomById(Long.parseLong(chat.getReceiver()));
 
-        log.info(chat.toString());
-
-        if (chatRoomById.isEmpty()) {
-            throw new RuntimeException();
-        }
-
-        ChatRoom chatRoom = chatRoomService.getChatRoomById(Long.parseLong(chat.getReceiver())).get();
-        List<Long> webSocketSessionIdInUse = chatRoomService.getWebSocketSessionIdInUse(chatRoom, chat);
+        List<Long> webSocketSessionIdInUse = chatRoomService.getWebSocketSessionIdInUse(Long.parseLong(chat.getReceiver()), chat);
 
         for (Long sessionId : webSocketSessionIdInUse) {
             sessionMap.get(String.valueOf(sessionId)).sendMessage(new TextMessage(Utils.getString(chat)));
         }
 
-        Message message = Message.createMessage(1L, chatRoom.getChatRoomId());
+        Message message = Message.createMessage(1L, Long.parseLong(chat.getReceiver()));
         messageService.createMessage(message);
     }
 

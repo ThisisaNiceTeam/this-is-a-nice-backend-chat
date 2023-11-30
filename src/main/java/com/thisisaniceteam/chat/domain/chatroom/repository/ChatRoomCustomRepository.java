@@ -15,4 +15,6 @@ public interface ChatRoomCustomRepository {
     Optional<ArrayList<ChatRoom>> getChatRoomByMember(Member member);
 
     Optional<ChatRoom> getWaitedChatRoom();
+
+    ChatRoom getChatRoomWithWebSocketSessions(Long chatRoomId);
 }

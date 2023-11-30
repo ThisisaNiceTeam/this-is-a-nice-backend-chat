@@ -29,5 +29,5 @@ public interface ChatRoomService {
     Optional<ChatRoom> getChatRoomById(Long chatRoomId);
 
     // 연결되어 있는 webSocketSession List 반환
-    List<Long> getWebSocketSessionIdInUse(ChatRoom chatRoom, Chat chat);
+    List<Long> getWebSocketSessionIdInUse(Long chatRoomId, Chat chat);
 }
