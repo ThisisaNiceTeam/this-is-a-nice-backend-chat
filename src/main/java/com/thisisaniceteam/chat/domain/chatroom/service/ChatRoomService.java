@@ -22,4 +22,7 @@ public interface ChatRoomService {
 
     // 채팅방 상태 전환 업데이트하기
     void updateChatRoomState(ChatRoom chatRoom);
+
+    // 해당 채팅방 가져오기
+    Optional<ChatRoom> getChatRoomById(Long chatRoomId);
 }

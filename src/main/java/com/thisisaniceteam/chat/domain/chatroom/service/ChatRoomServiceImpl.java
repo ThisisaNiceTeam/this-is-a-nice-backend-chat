@@ -51,4 +51,9 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     public void updateChatRoomState(ChatRoom chatRoom) {
         chatRoomRepository.save(chatRoom);
     }
+
+    @Override
+    public Optional<ChatRoom> getChatRoomById(Long chatRoomId) {
+        return chatRoomRepository.findById(chatRoomId);
+    }
 }
