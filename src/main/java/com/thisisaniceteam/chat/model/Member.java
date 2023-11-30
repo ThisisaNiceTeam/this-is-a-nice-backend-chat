@@ -23,4 +23,13 @@ public class Member extends BaseEntity {
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MemberProfileImage memberProfileImage;
+
+    public List<ChatRoom> getAllChatRooms() {
+        List<ChatRoom> chatRooms = new ArrayList<>();
+        for (MemberChatRoom memberChatRoom : memberChatRooms) {
+            chatRooms.add(memberChatRoom.getChatRoom());
+        }
+
+        return chatRooms;
+    }
 }
