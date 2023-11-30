@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,7 +25,7 @@ public class ChatRoom extends BaseEntity{
     private List<MemberChatRoom> memberChatRoom = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-    private List<WebSocket> webSockets = new ArrayList<>();
+    private Set<WebSocket> webSockets = new HashSet<>();
 
     public static ChatRoom createChatRoom() {
         return new ChatRoomBuilder()
