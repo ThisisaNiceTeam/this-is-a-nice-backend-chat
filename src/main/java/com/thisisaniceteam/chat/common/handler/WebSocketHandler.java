@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.thisisaniceteam.chat.domain.chatroom.service.ChatRoomService;
 import com.thisisaniceteam.chat.domain.member.service.MemberService;
 import com.thisisaniceteam.chat.domain.message.service.MessageService;
+import com.thisisaniceteam.chat.domain.websocket.service.WebSocketService;
 import com.thisisaniceteam.chat.model.*;
 import com.thisisaniceteam.chat.model.dto.Chat;
 import com.thisisaniceteam.chat.utils.Utils;
@@ -30,6 +31,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private final MemberService memberService;
 
     private final MessageService messageService;
+    private final WebSocketService webSocketService;
 
     private final Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
 
@@ -51,7 +53,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         Set<WebSocket> webSockets = chatRoom.getWebSockets();
 
         for (WebSocket webSocket : webSockets) {
-            if (!webSocket.getWebSocketId().equals(Long.parseLong(chat.getSender()))) {
+            if (!webSocket.getWebSocketId().equals(Long.parseLong(chat.getSender())) & webSocket.getWebSocketState().equals(WebSocketState.USE)) {
                 sessionMap.get(String.valueOf(webSocket.getWebSocketId())).sendMessage(new TextMessage(Utils.getString(chat)));
             }
         }
@@ -100,6 +102,27 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        /**
+         * 해당 유저가 가지고 있는 채팅방에서 소켓 내역들을 제거해준다.
+         */
+        log.info("Connection Closing Start");
+//        String userId = (String) session.getAttributes().get("userId");
+//        Optional<Member> memberByMemberId = memberService.getMemberByMemberId(Long.parseLong(userId));
+//
+//        // 추후에 에러 로직 별도 추가
+//        if (memberByMemberId.isEmpty()) {
+//            throw new RuntimeException();
+//        }
+
+        log.info("ChatRoom Session Removing Start");
+        // 회원이 가진 모든 채팅방에서 해당 웹소켓 세션을 제거한다.
+        List<WebSocket> allBySessionId = webSocketService.getAllBySessionId(session.getId());
+        allBySessionId.forEach(WebSocket::deleteWebSocket);
+        sessionMap.remove(session.getId());
+        webSocketService.updateAll(allBySessionId);
+
+        log.info("ChatRoom Session Removed");
+
         super.afterConnectionClosed(session, status);
         log.info("Connection Closed");
     }
