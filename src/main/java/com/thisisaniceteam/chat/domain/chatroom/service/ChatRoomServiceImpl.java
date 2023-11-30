@@ -2,16 +2,16 @@ package com.thisisaniceteam.chat.domain.chatroom.service;
 
 import com.thisisaniceteam.chat.domain.chatroom.repository.ChatRoomRepository;
 import com.thisisaniceteam.chat.domain.memberchatroom.service.MemberChatRoomService;
-import com.thisisaniceteam.chat.model.ChatRoom;
-import com.thisisaniceteam.chat.model.Member;
-import com.thisisaniceteam.chat.model.MemberChatRoom;
-import com.thisisaniceteam.chat.model.RoomState;
+import com.thisisaniceteam.chat.model.*;
+import com.thisisaniceteam.chat.model.dto.Chat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +55,21 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     @Override
     public Optional<ChatRoom> getChatRoomById(Long chatRoomId) {
         return chatRoomRepository.findById(chatRoomId);
+    }
+
+    @Override
+    public List<Long> getWebSocketSessionIdInUse(ChatRoom chatRoom, Chat chat) {
+        ArrayList<Long> sessionIdList = new ArrayList<>();
+        Set<WebSocket> webSockets = chatRoom.getWebSockets();
+
+        if (!webSockets.isEmpty()) {
+            for (WebSocket webSocket : webSockets) {
+                if (!webSocket.getWebSocketId().equals(Long.parseLong(chat.getSender())) & webSocket.getWebSocketState().equals(WebSocketState.USE)) {
+                    sessionIdList.add(webSocket.getWebSocketId());
+                }
+            }
+        }
+
+        return sessionIdList;
     }
 }

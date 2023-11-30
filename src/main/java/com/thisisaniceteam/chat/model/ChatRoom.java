@@ -24,7 +24,7 @@ public class ChatRoom extends BaseEntity{
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<MemberChatRoom> memberChatRoom = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private Set<WebSocket> webSockets = new HashSet<>();
 
     public static ChatRoom createChatRoom() {

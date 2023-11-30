@@ -1,6 +1,5 @@
 package com.thisisaniceteam.chat.common.handler;
 
-import com.google.gson.Gson;
 import com.thisisaniceteam.chat.domain.chatroom.service.ChatRoomService;
 import com.thisisaniceteam.chat.domain.member.service.MemberService;
 import com.thisisaniceteam.chat.domain.message.service.MessageService;
@@ -19,7 +18,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -28,7 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketHandler extends TextWebSocketHandler {
 
     private final ChatRoomService chatRoomService;
-    private final MemberService memberService;
 
     private final MessageService messageService;
     private final WebSocketService webSocketService;
@@ -37,6 +34,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
+        log.info("Handle Message Start");
         /**
          * 한 채팅방에는 2명의 인원이 있지만 여러 기기를 통해 세션이 여러 개 일 수 있다. 따라서 모든 세션에 메시지를 전송해준다.
          * DB에 저장하는 건 한 번만 저장해준다.
@@ -45,20 +43,20 @@ public class WebSocketHandler extends TextWebSocketHandler {
         chat.setSender(session.getId());
         Optional<ChatRoom> chatRoomById = chatRoomService.getChatRoomById(Long.parseLong(chat.getReceiver()));
 
+        log.info(chat.toString());
+
         if (chatRoomById.isEmpty()) {
             throw new RuntimeException();
         }
 
         ChatRoom chatRoom = chatRoomService.getChatRoomById(Long.parseLong(chat.getReceiver())).get();
-        Set<WebSocket> webSockets = chatRoom.getWebSockets();
+        List<Long> webSocketSessionIdInUse = chatRoomService.getWebSocketSessionIdInUse(chatRoom, chat);
 
-        for (WebSocket webSocket : webSockets) {
-            if (!webSocket.getWebSocketId().equals(Long.parseLong(chat.getSender())) & webSocket.getWebSocketState().equals(WebSocketState.USE)) {
-                sessionMap.get(String.valueOf(webSocket.getWebSocketId())).sendMessage(new TextMessage(Utils.getString(chat)));
-            }
+        for (Long sessionId : webSocketSessionIdInUse) {
+            sessionMap.get(String.valueOf(sessionId)).sendMessage(new TextMessage(Utils.getString(chat)));
         }
 
-        Message message = Message.createMessage(Long.parseLong((String) session.getAttributes().get("userId")), chatRoom.getChatRoomId());
+        Message message = Message.createMessage(1L, chatRoom.getChatRoomId());
         messageService.createMessage(message);
     }
 

@@ -4,11 +4,13 @@ import com.thisisaniceteam.chat.domain.websocket.repository.WebSocketRepository;
 import com.thisisaniceteam.chat.model.WebSocket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class WebSocketServiceImpl implements WebSocketService{
     private final WebSocketRepository webSocketRepository;
 
