@@ -63,31 +63,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
         String sessionId = session.getId();
         sessionMap.put(sessionId, session);
 
-//        Optional<ChatRoom> waitedChatRoom = chatRoomService.getWaitedChatRoom();
-//        Optional<Member> optionalMember = memberService.getMemberByMemberId(Long.valueOf(2));
-//        /**
-//         * 시나리오 1. 연결되지 않은 채팅방이 있다.
-//         * 연결되지 않은 채팅방 중 가장 오래된 채팅방을 가져와서 연결해준다.
-//         */
-//        if (waitedChatRoom.isPresent() && optionalMember.isPresent()) {
-//            ChatRoom chatRoom = waitedChatRoom.get();
-//            Member member = optionalMember.get();
-//            MemberChatRoom memberChatRoom = chatRoomService.MemberToChatRoom(chatRoom, member);
-//            chatRoom.roomIsCompleted();
-//            chatRoomService.updateChatRoomState(chatRoom);
-//        }
-//        /**
-//         * 시나리오 2. 연결되지 않은 채팅방이 없다.
-//         * 채팅방을 연결되지 않은 상태로 새로 생성해준다.
-//         */
-//        else if (waitedChatRoom.isEmpty() && optionalMember.isPresent()) {
-//            Member member = optionalMember.get();
-//            ChatRoom newChatRoom = chatRoomService.createChatRoom();
-//
-//            chatRoomService.MemberToChatRoom(newChatRoom, member);
-//        } else {
-//            afterConnectionClosed(session, CloseStatus.NO_STATUS_CODE);
-//        }
     }
 
     @Override
@@ -96,13 +71,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
          * 해당 유저가 가지고 있는 채팅방에서 소켓 내역들을 제거해준다.
          */
         log.info("Connection Closing Start");
-//        String userId = (String) session.getAttributes().get("userId");
-//        Optional<Member> memberByMemberId = memberService.getMemberByMemberId(Long.parseLong(userId));
-//
-//        // 추후에 에러 로직 별도 추가
-//        if (memberByMemberId.isEmpty()) {
-//            throw new RuntimeException();
-//        }
 
         log.info("ChatRoom Session Removing Start");
         // 회원이 가진 모든 채팅방에서 해당 웹소켓 세션을 제거한다.
