@@ -16,7 +16,16 @@ public class WebSocket extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long webSocketId;
 
+    private String sessionId;
+
+    @Enumerated(EnumType.STRING)
+    private WebSocketState webSocketState;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
+
+    public void deleteWebSocket() {
+        this.webSocketState = WebSocketState.DELETED;
+    }
 }
