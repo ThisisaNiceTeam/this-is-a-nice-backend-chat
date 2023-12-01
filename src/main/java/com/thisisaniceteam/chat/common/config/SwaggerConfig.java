@@ -1,4 +1,4 @@
-package com.thisisaniceteam.chat.config;
+package com.thisisaniceteam.chat.common.config;
 
 
 import io.swagger.v3.oas.models.Components;
