@@ -1,7 +1,9 @@
 package com.thisisaniceteam.chat.domain.message.repository;
 
-import com.thisisaniceteam.chat.domain.message.model.Message;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.thisisaniceteam.chat.model.Message;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MessageRepository extends MongoRepository<Message, String> {
+@Repository
+public interface MessageRepository extends JpaRepository<Message, Long> {
 }

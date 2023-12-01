@@ -1,19 +1,22 @@
-package com.thisisaniceteam.chat.domain.chatroom.model;
+package com.thisisaniceteam.chat.model;
 
-import com.thisisaniceteam.chat.domain.member.model.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class ChatRoom {
+@AllArgsConstructor
+@Builder
+public class MemberAgreement extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long chatRoom;
+    private Long memberAgreementId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 }
