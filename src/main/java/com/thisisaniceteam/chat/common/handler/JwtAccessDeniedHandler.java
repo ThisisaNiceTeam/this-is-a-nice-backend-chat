@@ -1,4 +1,4 @@
-package com.thisisaniceteam.chat.config.jwt;
+package com.thisisaniceteam.chat.common.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
