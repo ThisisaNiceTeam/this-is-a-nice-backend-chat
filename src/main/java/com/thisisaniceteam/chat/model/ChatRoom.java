@@ -1,18 +1,47 @@
 package com.thisisaniceteam.chat.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class ChatRoom {
+@AllArgsConstructor
+@Builder
+public class ChatRoom extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long chatRoom;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long chatRoomId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Enumerated(EnumType.STRING)
+    private RoomState roomState;
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<MemberChatRoom> memberChatRoom = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private Set<WebSocket> webSockets = new HashSet<>();
+
+    public static ChatRoom createChatRoom() {
+        return new ChatRoomBuilder()
+                .roomState(RoomState.WAIT)
+                .build();
+    }
+
+    public void roomIsReady() {
+        this.roomState = RoomState.COMPLETED;
+    }
+
+    public void roomIsRemoved() {
+        this.roomState = RoomState.REMOVED;
+    }
+
+    public void roomIsCompleted() {
+        this.roomState = RoomState.COMPLETED;
+    }
 }
