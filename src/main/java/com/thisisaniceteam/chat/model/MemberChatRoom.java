@@ -16,7 +16,6 @@ public class MemberChatRoom extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberChatRoomId;
 
-    private String memberChatRoomSession;
     private String chatRoomName;
 
     @ManyToOne(fetch = FetchType.LAZY)

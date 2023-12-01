@@ -1,6 +1,8 @@
 package com.thisisaniceteam.chat.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +27,13 @@ public class Member extends BaseEntity {
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MemberProfileImage memberProfileImage;
+
+    public List<ChatRoom> getAllChatRooms() {
+        List<ChatRoom> chatRooms = new ArrayList<>();
+        for (MemberChatRoom memberChatRoom : memberChatRooms) {
+            chatRooms.add(memberChatRoom.getChatRoom());
+        }
+
+        return chatRooms;
+    }
 }
