@@ -1,4 +1,4 @@
-package com.thisisaniceteam.chat.model;
+package com.thisisaniceteam.chat.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberProfileImage extends BaseEntity {
+public class MemberAgreement extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberProfileImageId;
+    private Long memberAgreementId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

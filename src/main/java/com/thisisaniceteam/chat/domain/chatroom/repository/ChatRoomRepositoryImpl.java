@@ -1,17 +1,18 @@
 package com.thisisaniceteam.chat.domain.chatroom.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.thisisaniceteam.chat.model.ChatRoom;
-import com.thisisaniceteam.chat.model.Member;
+import com.thisisaniceteam.chat.model.entity.ChatRoom;
+import com.thisisaniceteam.chat.model.entity.Member;
 import com.thisisaniceteam.chat.model.RoomState;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static com.thisisaniceteam.chat.model.QChatRoom.*;
-import static com.thisisaniceteam.chat.model.QMember.member;
-import static com.thisisaniceteam.chat.model.QMemberChatRoom.*;
+import static com.thisisaniceteam.chat.model.entity.QChatRoom.chatRoom;
+import static com.thisisaniceteam.chat.model.entity.QMember.member;
+import static com.thisisaniceteam.chat.model.entity.QMemberChatRoom.memberChatRoom;
+
 
 @RequiredArgsConstructor
 public class ChatRoomRepositoryImpl implements ChatRoomCustomRepository {

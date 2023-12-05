@@ -1,5 +1,6 @@
-package com.thisisaniceteam.chat.model;
+package com.thisisaniceteam.chat.model.entity;
 
+import com.thisisaniceteam.chat.model.RoomState;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatRoom extends BaseEntity{
+public class ChatRoom extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatRoomId;

@@ -2,9 +2,9 @@ package com.thisisaniceteam.chat.domain.memberchatroom.service;
 
 import com.thisisaniceteam.chat.domain.member.repository.MemberRepository;
 import com.thisisaniceteam.chat.domain.memberchatroom.repository.MemberChatRoomRepository;
-import com.thisisaniceteam.chat.model.ChatRoom;
-import com.thisisaniceteam.chat.model.Member;
-import com.thisisaniceteam.chat.model.MemberChatRoom;
+import com.thisisaniceteam.chat.model.entity.ChatRoom;
+import com.thisisaniceteam.chat.model.entity.Member;
+import com.thisisaniceteam.chat.model.entity.MemberChatRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

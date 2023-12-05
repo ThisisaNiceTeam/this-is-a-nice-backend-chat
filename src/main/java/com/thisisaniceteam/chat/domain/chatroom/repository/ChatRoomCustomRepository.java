@@ -1,7 +1,7 @@
 package com.thisisaniceteam.chat.domain.chatroom.repository;
 
-import com.thisisaniceteam.chat.model.ChatRoom;
-import com.thisisaniceteam.chat.model.Member;
+import com.thisisaniceteam.chat.model.entity.ChatRoom;
+import com.thisisaniceteam.chat.model.entity.Member;
 
 import java.util.ArrayList;
 import java.util.Optional;

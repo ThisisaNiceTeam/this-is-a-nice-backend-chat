@@ -1,5 +1,8 @@
-package com.thisisaniceteam.chat.model;
+package com.thisisaniceteam.chat.model.entity;
 
+import com.thisisaniceteam.chat.model.WebSocketState;
+import com.thisisaniceteam.chat.model.entity.BaseEntity;
+import com.thisisaniceteam.chat.model.entity.ChatRoom;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

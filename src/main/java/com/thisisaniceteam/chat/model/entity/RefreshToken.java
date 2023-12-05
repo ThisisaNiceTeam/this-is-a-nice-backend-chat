@@ -1,4 +1,4 @@
-package com.thisisaniceteam.chat.model;
+package com.thisisaniceteam.chat.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,5 +19,6 @@ public class RefreshToken extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long refreshTokenId;
 
+    private Long memberId;
     private String refreshToken;
 }

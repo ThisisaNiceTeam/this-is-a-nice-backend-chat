@@ -3,8 +3,9 @@ package com.thisisaniceteam.chat.common.handler;
 import com.thisisaniceteam.chat.domain.chatroom.service.ChatRoomService;
 import com.thisisaniceteam.chat.domain.message.service.MessageService;
 import com.thisisaniceteam.chat.domain.websocket.service.WebSocketService;
-import com.thisisaniceteam.chat.model.*;
 import com.thisisaniceteam.chat.model.dto.Chat;
+import com.thisisaniceteam.chat.model.entity.Message;
+import com.thisisaniceteam.chat.model.entity.WebSocket;
 import com.thisisaniceteam.chat.utils.ChatUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         log.info("Connection Start");
         // Servlet Request 에서 저장해줬던 데이터
         Map<String, Object> attributes = session.getAttributes();
-        String userId = (String) attributes.get("userId");
+        String memberId = (String) attributes.get("memberId");
 
         String sessionId = session.getId();
         sessionMap.put(sessionId, session);
