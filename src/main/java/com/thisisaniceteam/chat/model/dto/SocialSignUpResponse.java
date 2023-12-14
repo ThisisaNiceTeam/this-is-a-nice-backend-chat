@@ -10,10 +10,10 @@ public class SocialSignUpResponse {
 
     private String accessToken;
     private String refreshToken;
-    private Long memberId;
+    private String nickname;
 
-    public static SocialSignUpResponse of(String accessToken, String refreshToken, Long memberId) {
-        return new SocialSignUpResponse(accessToken, refreshToken, memberId);
+    public static SocialSignUpResponse of(String accessToken, String refreshToken, String nickname) {
+        return new SocialSignUpResponse(accessToken, refreshToken, nickname);
     }
 
 }

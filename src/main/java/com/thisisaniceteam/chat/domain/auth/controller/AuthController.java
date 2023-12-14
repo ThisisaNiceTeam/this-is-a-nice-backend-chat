@@ -21,17 +21,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
     private final JWTUtil jwtUtil;
     private final MemberService memberService;
 
     @Operation(summary = "인가코드 전달")
-    @PostMapping("/auth/authorization")
+    @PostMapping("/authorization")
     public ResponseEntity<?> passAuthorizationCode(
             @Parameter(required = true) String authorizationCode
     ) {
@@ -51,11 +50,11 @@ public class AuthController {
                 // 로그인을 진행한다.
                 LoginRequest loginRequest = new LoginRequest(kakaoToken.getAccess_token(), MemberSocialType.KAKAO);
                 LoginResponse loginResponse = authService.login(loginRequest);
-                status = HttpStatus.OK;
                 response.put("access-token", loginResponse.getAccessToken());
                 response.put("refresh-token", loginResponse.getRefreshToken());
                 response.put("nickname", loginResponse.getNickname());
                 response.put("message", "로그인을 완료했습니다.");
+                status = HttpStatus.OK;
             } else {
                 // 계정이 없는 유저
                 response.put("kakao-access-token", kakaoToken.getAccess_token());
@@ -73,14 +72,19 @@ public class AuthController {
             @Valid @RequestPart @Parameter(required = true) SocialSignUpRequest socialSignUpRequest,
             @RequestPart(required = false) @Parameter(required = false) MultipartFile profileImage
     ) throws Exception {
-        SocialSignUpResponse response = authService.signUp(socialSignUpRequest, profileImage);
+        Map<String, Object> response = new HashMap<>();
+        SocialSignUpResponse socialSignUpResponse = authService.signUp(socialSignUpRequest, profileImage);
+        response.put("access-token", socialSignUpResponse.getAccessToken());
+        response.put("refresh-token", socialSignUpResponse.getRefreshToken());
+        response.put("nickname", socialSignUpResponse.getNickname());
+        response.put("message", "회원가입을 완료했습니다.");
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(response, status);
     }
 
     @Operation(summary = "로그아웃 요청")
     // 이상 Swagger 코드
-    @PostMapping("/auth/logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(
             @RequestHeader(value = "Authorization") String authorization
     ) {
@@ -93,7 +97,7 @@ public class AuthController {
 
     @Operation(summary = "회원 탈퇴 요청")
     // 이상 Swagger 코드
-    @DeleteMapping("/auth/withdrawal")
+    @DeleteMapping("/withdrawal")
     public ResponseEntity<String> withdrawal(
             @RequestHeader(value = "Authorization") String authorization
     ) {

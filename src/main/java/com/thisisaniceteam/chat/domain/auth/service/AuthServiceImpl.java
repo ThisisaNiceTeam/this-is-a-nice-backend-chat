@@ -44,11 +44,11 @@ public class AuthServiceImpl implements AuthService {
     public SocialSignUpResponse signUp(SocialSignUpRequest socialSignUpRequest, MultipartFile profileImage) throws Exception {
         AuthProvider authProvider = authProviderFinder.findAuthProvider(socialSignUpRequest.getSocialType());
         String socialId = authProvider.getSocialId(socialSignUpRequest.getToken());
-        Long memberId = memberService.registerMember(socialSignUpRequest.toCreateMemberRequest(socialId), profileImage);
-        String accessToken = jwtUtil.createAccessToken(String.valueOf(memberId));
-        String refreshToken = jwtUtil.createRefreshToken(String.valueOf(memberId));
-        createRefreshToken(memberId, refreshToken);
-        return SocialSignUpResponse.of(accessToken, refreshToken, memberId);
+        Member member = memberService.registerMember(socialSignUpRequest.toCreateMemberRequest(socialId), profileImage);
+        String accessToken = jwtUtil.createAccessToken(String.valueOf(member.getMemberId()));
+        String refreshToken = jwtUtil.createRefreshToken(String.valueOf(member.getMemberId()));
+        createRefreshToken(member.getMemberId(), refreshToken);
+        return SocialSignUpResponse.of(accessToken, refreshToken, member.getNickname());
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
         Member member = memberRepository.findMemberBySocialInfo(socialId, request.getSocialType());
         String accessToken = jwtUtil.createAccessToken(String.valueOf(member.getMemberId()));
         String refreshToken = jwtUtil.createRefreshToken(String.valueOf(member.getMemberId()));
-
+        createRefreshToken(member.getMemberId(), refreshToken);
         return LoginResponse.of(accessToken, refreshToken, member.getNickname());
     }
 

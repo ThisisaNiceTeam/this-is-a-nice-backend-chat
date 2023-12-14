@@ -27,15 +27,16 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Long registerMember(CreateMemberRequest createMemberRequest, MultipartFile profileImage) throws Exception {
+    public Member registerMember(CreateMemberRequest createMemberRequest, MultipartFile profileImage) throws Exception {
         MemberServiceHelper.validateNotExistsUser(memberRepository, createMemberRequest.getSocialId(), createMemberRequest.getSocialType());
+        // TODO 나중에 데이터베이스에서 싸피 사람들을 조회하고 맞는 사람들만 가입할 수 있도록 검증추가
         if (profileImage != null) {
             FileUploadResponse fileUploadResponse = fileUploadUtil.uploadFile("image", profileImage);
             Member member = memberRepository.save(createMemberRequest.toEntity(fileUploadResponse));
-            return member.getMemberId();
+            return member;
         } else {
             Member member = memberRepository.save(createMemberRequest.toEntity(new FileUploadResponse()));
-            return member.getMemberId();
+            return member;
         }
     }
 

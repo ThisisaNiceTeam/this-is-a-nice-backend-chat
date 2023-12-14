@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface MemberService {
     Optional<Member> getMemberByMemberId(Long memberId);
 
-    Long registerMember(CreateMemberRequest createMemberRequest, MultipartFile profileImage) throws IOException, Exception;
+    Member registerMember(CreateMemberRequest createMemberRequest, MultipartFile profileImage) throws IOException, Exception;
 
     Boolean validateNotExistsUser(String socialId, MemberSocialType socialType);
 }
