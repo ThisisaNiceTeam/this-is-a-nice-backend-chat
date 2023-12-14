@@ -1,12 +1,12 @@
 package com.thisisaniceteam.chat.common.handler;
 
 import com.thisisaniceteam.chat.domain.chatroom.service.ChatRoomService;
-import com.thisisaniceteam.chat.domain.member.service.MemberService;
 import com.thisisaniceteam.chat.domain.message.service.MessageService;
 import com.thisisaniceteam.chat.domain.websocket.service.WebSocketService;
-import com.thisisaniceteam.chat.model.*;
 import com.thisisaniceteam.chat.model.dto.Chat;
-import com.thisisaniceteam.chat.utils.Utils;
+import com.thisisaniceteam.chat.model.entity.Message;
+import com.thisisaniceteam.chat.model.entity.WebSocket;
+import com.thisisaniceteam.chat.utils.ChatUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -39,13 +38,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
          * 한 채팅방에는 2명의 인원이 있지만 여러 기기를 통해 세션이 여러 개 일 수 있다. 따라서 모든 세션에 메시지를 전송해준다.
          * DB에 저장하는 건 한 번만 저장해준다.
          */
-        Chat chat = Utils.getObject(textMessage.getPayload());
+        Chat chat = ChatUtil.getObject(textMessage.getPayload());
         chat.setSender(session.getId());
 
         List<Long> webSocketSessionIdInUse = chatRoomService.getWebSocketSessionIdInUse(Long.parseLong(chat.getReceiver()), chat);
 
         for (Long sessionId : webSocketSessionIdInUse) {
-            sessionMap.get(String.valueOf(sessionId)).sendMessage(new TextMessage(Utils.getString(chat)));
+            sessionMap.get(String.valueOf(sessionId)).sendMessage(new TextMessage(ChatUtil.getString(chat)));
         }
 
         Message message = Message.createMessage(1L, Long.parseLong(chat.getReceiver()));
@@ -58,7 +57,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         log.info("Connection Start");
         // Servlet Request 에서 저장해줬던 데이터
         Map<String, Object> attributes = session.getAttributes();
-        String userId = (String) attributes.get("userId");
+        String memberId = (String) attributes.get("memberId");
 
         String sessionId = session.getId();
         sessionMap.put(sessionId, session);

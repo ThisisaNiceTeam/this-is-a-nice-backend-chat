@@ -23,8 +23,8 @@ public class HandShakeInterceptor extends HttpSessionHandshakeInterceptor {
         // TODO
         if (request instanceof ServletServerHttpRequest servletServerHttpRequest) {
             HttpServletRequest servletRequest = servletServerHttpRequest.getServletRequest();
-            String userId = servletRequest.getParameter("userId");
-            attributes.put("userId", userId);
+            String memberId = servletRequest.getParameter("memberId");
+            attributes.put("memberId", memberId);
         }
 
         return super.beforeHandshake(request, response, wsHandler, attributes);

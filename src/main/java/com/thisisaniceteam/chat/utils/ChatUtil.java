@@ -3,10 +3,10 @@ package com.thisisaniceteam.chat.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thisisaniceteam.chat.model.dto.Chat;
 
-public class Utils {
+public class ChatUtil {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private Utils() {
+    private ChatUtil() {
     }
 
     public static Chat getObject(final String chat) throws Exception {

@@ -1,8 +1,8 @@
 package com.thisisaniceteam.chat.domain.chatroom.service;
 
-import com.thisisaniceteam.chat.model.ChatRoom;
-import com.thisisaniceteam.chat.model.Member;
-import com.thisisaniceteam.chat.model.MemberChatRoom;
+import com.thisisaniceteam.chat.model.entity.ChatRoom;
+import com.thisisaniceteam.chat.model.entity.Member;
+import com.thisisaniceteam.chat.model.entity.MemberChatRoom;
 import com.thisisaniceteam.chat.model.dto.Chat;
 
 import java.util.ArrayList;

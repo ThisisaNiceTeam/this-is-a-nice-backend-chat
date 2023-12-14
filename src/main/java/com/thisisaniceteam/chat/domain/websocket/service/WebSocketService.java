@@ -1,6 +1,6 @@
 package com.thisisaniceteam.chat.domain.websocket.service;
 
-import com.thisisaniceteam.chat.model.WebSocket;
+import com.thisisaniceteam.chat.model.entity.WebSocket;
 
 import java.util.List;
 

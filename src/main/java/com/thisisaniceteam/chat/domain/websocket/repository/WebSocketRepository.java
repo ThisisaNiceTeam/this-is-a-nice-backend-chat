@@ -1,6 +1,6 @@
 package com.thisisaniceteam.chat.domain.websocket.repository;
 
-import com.thisisaniceteam.chat.model.WebSocket;
+import com.thisisaniceteam.chat.model.entity.WebSocket;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

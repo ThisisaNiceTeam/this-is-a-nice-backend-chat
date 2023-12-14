@@ -1,6 +1,6 @@
 package com.thisisaniceteam.chat.domain.chatroom.repository;
 
-import com.thisisaniceteam.chat.model.ChatRoom;
+import com.thisisaniceteam.chat.model.entity.ChatRoom;
 import com.thisisaniceteam.chat.model.RoomState;
 import org.springframework.data.jpa.repository.JpaRepository;
 

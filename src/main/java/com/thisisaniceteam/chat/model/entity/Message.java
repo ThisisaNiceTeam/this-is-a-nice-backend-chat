@@ -1,4 +1,4 @@
-package com.thisisaniceteam.chat.model;
+package com.thisisaniceteam.chat.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

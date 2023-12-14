@@ -1,7 +1,7 @@
 package com.thisisaniceteam.chat.domain.websocket.service;
 
 import com.thisisaniceteam.chat.domain.websocket.repository.WebSocketRepository;
-import com.thisisaniceteam.chat.model.WebSocket;
+import com.thisisaniceteam.chat.model.entity.WebSocket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
