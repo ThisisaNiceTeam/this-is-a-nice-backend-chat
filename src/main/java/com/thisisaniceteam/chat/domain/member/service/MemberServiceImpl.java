@@ -1,6 +1,7 @@
 package com.thisisaniceteam.chat.domain.member.service;
 
 import com.thisisaniceteam.chat.domain.member.repository.MemberRepository;
+import com.thisisaniceteam.chat.model.MemberSocialType;
 import com.thisisaniceteam.chat.model.entity.Member;
 import com.thisisaniceteam.chat.model.dto.CreateMemberRequest;
 import com.thisisaniceteam.chat.model.dto.FileUploadResponse;
@@ -26,7 +27,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Long registerMember(CreateMemberRequest createMemberRequest, MultipartFile profileImage) throws IOException {
+    public Long registerMember(CreateMemberRequest createMemberRequest, MultipartFile profileImage) throws Exception {
+        MemberServiceHelper.validateNotExistsUser(memberRepository, createMemberRequest.getSocialId(), createMemberRequest.getSocialType());
         if (profileImage != null) {
             FileUploadResponse fileUploadResponse = fileUploadUtil.uploadFile("image", profileImage);
             Member member = memberRepository.save(createMemberRequest.toEntity(fileUploadResponse));
@@ -35,5 +37,10 @@ public class MemberServiceImpl implements MemberService{
             Member member = memberRepository.save(createMemberRequest.toEntity(new FileUploadResponse()));
             return member.getMemberId();
         }
+    }
+
+    @Override
+    public Boolean validateNotExistsUser(String socialId, MemberSocialType socialType) {
+        return memberRepository.existMemberBySocialInfo(socialId, socialType);
     }
 }

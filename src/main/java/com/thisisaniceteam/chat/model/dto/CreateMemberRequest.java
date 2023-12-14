@@ -1,5 +1,8 @@
 package com.thisisaniceteam.chat.model.dto;
 
+import com.thisisaniceteam.chat.model.MemberProfile;
+import com.thisisaniceteam.chat.model.MemberSocialInfo;
+import com.thisisaniceteam.chat.model.SsafyInfo;
 import com.thisisaniceteam.chat.model.entity.Member;
 import com.thisisaniceteam.chat.model.MemberSocialType;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +13,8 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@Builder
 public class CreateMemberRequest {
     private String socialId;
 
@@ -18,23 +23,15 @@ public class CreateMemberRequest {
 
     @Length(min = 1, max = 7)
     private String nickname;
+    private String region;
+    private String classRoom;
+    private String name;
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private CreateMemberRequest(String socialId, MemberSocialType socialType, String nickname) {
-        this.socialId = socialId;
-        this.socialType = socialType;
-        this.nickname = nickname;
-    }
-
-    public static CreateMemberRequest of(String socialId, MemberSocialType socialType, String nickname) {
-        return CreateMemberRequest.builder()
-                .socialId(socialId)
-                .socialType(socialType)
-                .nickname(nickname)
-                .build();
+    public static CreateMemberRequest of(String socialId, MemberSocialType socialType, String nickname, String region, String classRoom, String name) {
+        return new CreateMemberRequest(socialId, socialType, nickname, region, classRoom, name);
     }
 
     public Member toEntity(FileUploadResponse fileUploadResponse) {
-        return Member.newMember(socialId, socialType, nickname, fileUploadResponse.getFileUrl(), fileUploadResponse.getFilePath());
+        return Member.newMember(MemberSocialInfo.of(socialId, socialType), MemberProfile.of(fileUploadResponse.getFileUrl(), fileUploadResponse.getFileUrl()), SsafyInfo.of(region, classRoom, name));
     }
 }

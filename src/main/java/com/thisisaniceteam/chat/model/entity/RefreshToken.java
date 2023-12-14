@@ -21,4 +21,11 @@ public class RefreshToken extends BaseEntity {
 
     private Long memberId;
     private String refreshToken;
+
+    public static RefreshToken createRefreshToken(Long memberId, String refreshToken) {
+        return RefreshToken.builder()
+                .memberId(memberId)
+                .refreshToken(refreshToken)
+                .build();
+    }
 }

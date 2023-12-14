@@ -5,4 +5,7 @@ import com.thisisaniceteam.chat.model.MemberSocialType;
 
 public interface MemberCustomRepository {
     Member findMemberBySocialInfo(String socialId, MemberSocialType socialType);
+
+    boolean existMemberBySocialInfo(String socialId, MemberSocialType socialType);
+
 }

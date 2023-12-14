@@ -22,4 +22,15 @@ public class MemberRepositoryImpl implements MemberCustomRepository {
                         member.memberSocialInfo.socialType.eq(socialType)
                 ).fetchFirst();
     }
+
+    @Override
+    public boolean existMemberBySocialInfo(String socialId, MemberSocialType socialType) {
+        return queryFactory
+                .selectOne()
+                .from(member)
+                .where(
+                        member.memberSocialInfo.socialId.eq(socialId),
+                        member.memberSocialInfo.socialType.eq(socialType)
+                ).fetchFirst() != null;
+    }
 }

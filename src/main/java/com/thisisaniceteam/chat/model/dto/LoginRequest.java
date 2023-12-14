@@ -3,15 +3,13 @@ package com.thisisaniceteam.chat.model.dto;
 import com.thisisaniceteam.chat.model.MemberSocialType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 
 @ToString
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginRequest {
 
     @NotBlank
@@ -19,5 +17,4 @@ public class LoginRequest {
 
     @NotNull
     private MemberSocialType socialType;
-
 }

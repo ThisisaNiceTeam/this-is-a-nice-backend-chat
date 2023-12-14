@@ -4,6 +4,7 @@ package com.thisisaniceteam.chat.model.entity;
 import com.thisisaniceteam.chat.model.MemberProfile;
 import com.thisisaniceteam.chat.model.MemberSocialInfo;
 import com.thisisaniceteam.chat.model.MemberSocialType;
+import com.thisisaniceteam.chat.model.SsafyInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,9 @@ public class Member extends BaseEntity {
 
     @Embedded
     private MemberProfile profile;
+
+    @Embedded
+    private SsafyInfo ssafyInfo;
 
     @Column(length = 30)
     private String nickname;
@@ -37,21 +42,13 @@ public class Member extends BaseEntity {
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MemberProfileImage memberProfileImage;
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private Member(String socialId, MemberSocialType socialType, String nickname, String profileUrl, String profilePath) {
-        this.memberSocialInfo = MemberSocialInfo.of(socialId, socialType);
-        this.profile = MemberProfile.of(profileUrl, profilePath);
-        this.nickname = nickname;
-    }
-
-
-    public static Member newMember(String socialId, MemberSocialType socialType, String nickname, String profileUrl, String profilePath) {
+    public static Member newMember(MemberSocialInfo memberSocialInfo,
+                                    MemberProfile memberProfile,
+                                    SsafyInfo ssafyInfo) {
         return Member.builder()
-                .socialId(socialId)
-                .socialType(socialType)
-                .nickname(nickname)
-                .profileUrl(profileUrl)
-                .profilePath(profilePath)
+                .memberSocialInfo(memberSocialInfo)
+                .profile(memberProfile)
+                .ssafyInfo(ssafyInfo)
                 .build();
     }
 }

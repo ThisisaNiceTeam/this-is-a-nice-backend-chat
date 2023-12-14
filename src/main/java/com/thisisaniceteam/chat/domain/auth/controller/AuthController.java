@@ -1,6 +1,9 @@
 package com.thisisaniceteam.chat.domain.auth.controller;
 
+import com.thisisaniceteam.chat.common.client.kakao.dto.KakaoToken;
 import com.thisisaniceteam.chat.domain.auth.service.AuthService;
+import com.thisisaniceteam.chat.domain.member.service.MemberService;
+import com.thisisaniceteam.chat.model.MemberSocialType;
 import com.thisisaniceteam.chat.model.dto.LoginRequest;
 import com.thisisaniceteam.chat.model.dto.LoginResponse;
 import com.thisisaniceteam.chat.model.dto.SocialSignUpRequest;
@@ -15,7 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -24,6 +28,43 @@ import java.io.IOException;
 public class AuthController {
     private final AuthService authService;
     private final JWTUtil jwtUtil;
+    private final MemberService memberService;
+
+    @Operation(summary = "인가코드 전달")
+    @PostMapping("/auth/authorization")
+    public ResponseEntity<?> passAuthorizationCode(
+            @Parameter(required = true) String authorizationCode
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        HttpStatus status = null;
+        KakaoToken kakaoToken = authService.getKakaoToken(authorizationCode);
+        // 3 인가 코드로 발급이 불가능한 경우
+        if (kakaoToken == null) {
+            response.put("message", "인가 코드가 잘못되었습니다.");
+            status = HttpStatus.BAD_REQUEST;
+        } else {
+            // 인가 코드로 토큰을 발급 받았음
+            String kakaoSocialId = authService.getKakaoSocialId(kakaoToken.getAccess_token());
+
+            // 이미 계정이 있는 유저
+            if (memberService.validateNotExistsUser(kakaoSocialId, MemberSocialType.KAKAO)) {
+                // 로그인을 진행한다.
+                LoginRequest loginRequest = new LoginRequest(kakaoToken.getAccess_token(), MemberSocialType.KAKAO);
+                LoginResponse loginResponse = authService.login(loginRequest);
+                status = HttpStatus.OK;
+                response.put("access-token", loginResponse.getAccessToken());
+                response.put("refresh-token", loginResponse.getRefreshToken());
+                response.put("nickname", loginResponse.getNickname());
+                response.put("message", "로그인을 완료했습니다.");
+            } else {
+                // 계정이 없는 유저
+                response.put("kakao-access-token", kakaoToken.getAccess_token());
+                response.put("message", "추가 정보가 필요합니다.");
+                status = HttpStatus.OK;
+            }
+        }
+        return new ResponseEntity<>(response, status);
+    }
 
     @Operation(summary = "소셜 회원가입")
     // 이상 Swagger 코드
@@ -31,32 +72,9 @@ public class AuthController {
     public ResponseEntity<?> signUp(
             @Valid @RequestPart @Parameter(required = true) SocialSignUpRequest socialSignUpRequest,
             @RequestPart(required = false) @Parameter(required = false) MultipartFile profileImage
-    ) throws IOException {
-
-        Long memberId = authService.signUp(socialSignUpRequest, profileImage);
+    ) throws Exception {
+        SocialSignUpResponse response = authService.signUp(socialSignUpRequest, profileImage);
         HttpStatus status = HttpStatus.OK;
-        String accessToken = jwtUtil.createAccessToken(String.valueOf(memberId));
-
-        // refresh 저장 로직(데이터베이스) 추가
-        String refreshToken = jwtUtil.createRefreshToken(String.valueOf(memberId));
-        SocialSignUpResponse response = SocialSignUpResponse.of(accessToken, refreshToken, memberId);
-
-        return new ResponseEntity<>(response, status);
-    }
-
-    @Operation(summary = "로그인 요청")
-    // 이상 Swagger 코드
-    @PostMapping("/auth/login")
-    public ResponseEntity<?> login(
-            @Valid @RequestBody @Parameter(required = true) LoginRequest request
-    ) {
-        Long memberId = authService.login(request);
-        HttpStatus status = HttpStatus.OK;
-        String accessToken = jwtUtil.createAccessToken(String.valueOf(memberId));
-        String refreshToken = jwtUtil.createRefreshToken(String.valueOf(memberId));
-
-        LoginResponse response = LoginResponse.of(accessToken, refreshToken, memberId);
-
         return new ResponseEntity<>(response, status);
     }
 
