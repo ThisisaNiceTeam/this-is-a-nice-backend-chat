@@ -67,7 +67,7 @@ public class AuthController {
 
     @Operation(summary = "소셜 회원가입")
     // 이상 Swagger 코드
-    @PostMapping("/auth/social-signup")
+    @PostMapping("/social-signup")
     public ResponseEntity<?> signUp(
             @Valid @RequestPart @Parameter(required = true) SocialSignUpRequest socialSignUpRequest,
             @RequestPart(required = false) @Parameter(required = false) MultipartFile profileImage
