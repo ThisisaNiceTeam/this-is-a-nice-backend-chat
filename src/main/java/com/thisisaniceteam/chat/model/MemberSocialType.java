@@ -12,8 +12,8 @@ import lombok.ToString;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum MemberSocialType implements EnumModel {
 
-    APPLE("애플"),
-    KAKAO("카카오"),
+    APPLE("APPLE"),
+    KAKAO("KAKAO"),
     ;
 
     private final String description;

@@ -1,0 +1,25 @@
+package com.thisisaniceteam.chat.domain.auth.service;
+
+import com.thisisaniceteam.chat.common.client.kakao.dto.KakaoToken;
+import com.thisisaniceteam.chat.model.dto.LoginRequest;
+import com.thisisaniceteam.chat.model.dto.LoginResponse;
+import com.thisisaniceteam.chat.model.dto.SocialSignUpRequest;
+import com.thisisaniceteam.chat.model.dto.SocialSignUpResponse;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+public interface AuthService {
+    KakaoToken getKakaoToken(String authorizationCode);
+    SocialSignUpResponse signUp(SocialSignUpRequest request, MultipartFile profileImage) throws IOException, Exception;
+
+    LoginResponse login(LoginRequest request);
+
+    void withdrawal(Long memberId);
+
+    void createRefreshToken(Long memberId, String refreshToken);
+
+    void deleteRefreshToken(String memberId);
+
+    String getKakaoSocialId(String accessToken);
+}
