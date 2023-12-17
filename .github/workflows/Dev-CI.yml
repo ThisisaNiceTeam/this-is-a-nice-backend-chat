@@ -38,6 +38,7 @@ jobs:
       - name: make application-dev.yml
         if: contains(github.ref, 'develop')
         run: |
+          mkdir ./src/main/resources # resources 폴더 생성
           cd ./src/main/resources
           touch ./application-dev.yml
           echo "${{ secrets.YML_DEV }}" > ./application-dev.yml
