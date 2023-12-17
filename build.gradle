@@ -5,7 +5,6 @@ plugins {
 }
 
 group = 'com.thisisaniceteam'
-version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
@@ -67,6 +66,15 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 }
 
+bootJar{
+	archivesBaseName = 'ssafychat'
+	archiveFileName = 'ssafychat.jar'
+	archiveVersion = "0.0.1"
+}
+
+jar {
+	enabled = false
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
