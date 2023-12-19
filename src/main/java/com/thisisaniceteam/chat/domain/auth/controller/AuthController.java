@@ -32,7 +32,7 @@ public class AuthController {
     @Operation(summary = "인가코드 전달")
     @PostMapping("/authorization")
     public ResponseEntity<?> passAuthorizationCode(
-            @Parameter(required = true) String authorizationCode
+            @Parameter(required = true, description = "인가코드입니다") String authorizationCode
     ) {
         Map<String, Object> response = new HashMap<>();
         HttpStatus status = null;
@@ -69,17 +69,12 @@ public class AuthController {
     // 이상 Swagger 코드
     @PostMapping("/social-signup")
     public ResponseEntity<?> signUp(
-            @Valid @RequestPart @Parameter(required = true) SocialSignUpRequest socialSignUpRequest,
-            @RequestPart(required = false) @Parameter(required = false) MultipartFile profileImage
+            @Valid @RequestPart @Parameter(required = true, description = "회원 가입에 필요한 추가 정보입니다. 인가 코드 전달을 통해 받은 토큰을 함께 전달합니다.")
+            SocialSignUpRequest socialSignUpRequest,
+            @RequestPart(required = false) @Parameter(required = false, description = "프로필 사진입니다.") MultipartFile profileImage
     ) throws Exception {
-        Map<String, Object> response = new HashMap<>();
         SocialSignUpResponse socialSignUpResponse = authService.signUp(socialSignUpRequest, profileImage);
-        response.put("access-token", socialSignUpResponse.getAccessToken());
-        response.put("refresh-token", socialSignUpResponse.getRefreshToken());
-        response.put("nickname", socialSignUpResponse.getNickname());
-        response.put("message", "회원가입을 완료했습니다.");
-        HttpStatus status = HttpStatus.OK;
-        return new ResponseEntity<>(response, status);
+        return ResponseEntity.ok(socialSignUpResponse);
     }
 
     @Operation(summary = "로그아웃 요청")
@@ -89,10 +84,8 @@ public class AuthController {
             @RequestHeader(value = "Authorization") String authorization
     ) {
         String memberId = jwtUtil.getMemberId(authorization);
-        HttpStatus status = HttpStatus.OK;
         authService.deleteRefreshToken(memberId);
-
-        return new ResponseEntity<>("로그아웃이 되었습니다.", status);
+        return ResponseEntity.ok("로그아웃이 되었습니다.");
     }
 
     @Operation(summary = "회원 탈퇴 요청")
