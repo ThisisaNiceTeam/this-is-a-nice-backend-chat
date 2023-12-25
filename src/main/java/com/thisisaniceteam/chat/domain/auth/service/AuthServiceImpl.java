@@ -1,5 +1,6 @@
 package com.thisisaniceteam.chat.domain.auth.service;
 
+import com.thisisaniceteam.chat.common.client.dto.Token;
 import com.thisisaniceteam.chat.common.client.kakao.dto.KakaoToken;
 import com.thisisaniceteam.chat.common.provider.AuthProvider;
 import com.thisisaniceteam.chat.domain.auth.provider.AuthProviderFinder;
@@ -35,9 +36,9 @@ public class AuthServiceImpl implements AuthService {
     private final JWTUtil jwtUtil;
 
     @Override
-    public KakaoToken getKakaoToken(String authorizationCode) {
-        AuthProvider authProvider = authProviderFinder.findAuthProvider(MemberSocialType.KAKAO);
-        return authProvider.getKakaoToken(authorizationCode);
+    public Token getToken(String authorizationCode) {
+        AuthProvider authProvider = authProviderFinder.findAuthProvider(MemberSocialType.NAVER);
+        return authProvider.getToken(authorizationCode);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public LoginResponse login(LoginRequest request) {
         AuthProvider authProvider = authProviderFinder.findAuthProvider(request.getSocialType());
         String socialId = authProvider.getSocialId(request.getToken());
@@ -85,6 +86,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String getKakaoSocialId(String accessToken) {
         AuthProvider authProvider = authProviderFinder.findAuthProvider(MemberSocialType.KAKAO);
+        return authProvider.getSocialId(accessToken);
+    }
+
+    @Override
+    public String getNaverSocialId(String accessToken) {
+        AuthProvider authProvider = authProviderFinder.findAuthProvider(MemberSocialType.NAVER);
         return authProvider.getSocialId(accessToken);
     }
 }

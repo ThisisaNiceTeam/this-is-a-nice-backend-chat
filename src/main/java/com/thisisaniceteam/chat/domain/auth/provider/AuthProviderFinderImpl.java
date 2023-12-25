@@ -2,6 +2,7 @@ package com.thisisaniceteam.chat.domain.auth.provider;
 
 import com.thisisaniceteam.chat.common.provider.AuthProvider;
 import com.thisisaniceteam.chat.common.provider.KakaoAuthProvider;
+import com.thisisaniceteam.chat.common.provider.NaverAuthProvider;
 import com.thisisaniceteam.chat.model.MemberSocialType;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,12 @@ public class AuthProviderFinderImpl implements AuthProviderFinder{
     private static final Map<MemberSocialType, AuthProvider> authProviderMap = new EnumMap<>(MemberSocialType.class);
 
     private final KakaoAuthProvider kakaoAuthProvider;
+    private final NaverAuthProvider naverAuthProvider;
 
     @PostConstruct
     void initializeAuthProviders() {
         authProviderMap.put(MemberSocialType.KAKAO, kakaoAuthProvider);
+        authProviderMap.put(MemberSocialType.NAVER, naverAuthProvider);
     }
 
     @Override
