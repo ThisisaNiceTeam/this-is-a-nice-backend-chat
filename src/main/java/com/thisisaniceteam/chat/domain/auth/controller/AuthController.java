@@ -1,6 +1,6 @@
 package com.thisisaniceteam.chat.domain.auth.controller;
 
-import com.thisisaniceteam.chat.common.client.kakao.dto.KakaoToken;
+import com.thisisaniceteam.chat.common.client.dto.Token;
 import com.thisisaniceteam.chat.domain.auth.service.AuthService;
 import com.thisisaniceteam.chat.domain.member.service.MemberService;
 import com.thisisaniceteam.chat.model.MemberSocialType;
@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
     private final AuthService authService;
     private final JWTUtil jwtUtil;
@@ -34,21 +36,22 @@ public class AuthController {
     public ResponseEntity<?> passAuthorizationCode(
             @Parameter(required = true) String authorizationCode
     ) {
+        log.info(authorizationCode);
         Map<String, Object> response = new HashMap<>();
         HttpStatus status = null;
-        KakaoToken kakaoToken = authService.getKakaoToken(authorizationCode);
+        Token token = authService.getToken(authorizationCode);
         // 3 인가 코드로 발급이 불가능한 경우
-        if (kakaoToken == null) {
+        if (token == null) {
             response.put("message", "인가 코드가 잘못되었습니다.");
             status = HttpStatus.BAD_REQUEST;
         } else {
             // 인가 코드로 토큰을 발급 받았음
-            String kakaoSocialId = authService.getKakaoSocialId(kakaoToken.getAccess_token());
+            String naverSocialId = authService.getNaverSocialId(token.getAccess_token());
 
             // 이미 계정이 있는 유저
-            if (memberService.validateNotExistsUser(kakaoSocialId, MemberSocialType.KAKAO)) {
+            if (memberService.validateNotExistsUser(naverSocialId, MemberSocialType.NAVER)) {
                 // 로그인을 진행한다.
-                LoginRequest loginRequest = new LoginRequest(kakaoToken.getAccess_token(), MemberSocialType.KAKAO);
+                LoginRequest loginRequest = new LoginRequest(token.getAccess_token(), MemberSocialType.NAVER);
                 LoginResponse loginResponse = authService.login(loginRequest);
                 response.put("access-token", loginResponse.getAccessToken());
                 response.put("refresh-token", loginResponse.getRefreshToken());
@@ -57,7 +60,7 @@ public class AuthController {
                 status = HttpStatus.OK;
             } else {
                 // 계정이 없는 유저
-                response.put("kakao-access-token", kakaoToken.getAccess_token());
+                response.put("naver-access-token", token.getAccess_token());
                 response.put("message", "추가 정보가 필요합니다.");
                 status = HttpStatus.OK;
             }
