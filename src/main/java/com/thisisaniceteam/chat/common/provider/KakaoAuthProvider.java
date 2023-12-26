@@ -17,7 +17,7 @@ public class KakaoAuthProvider implements AuthProvider {
     }
 
     @Override
-    public KakaoToken getKakaoToken(String authorizationCode){
+    public KakaoToken getToken(String authorizationCode){
         try {
             return kakaoAuthApiClient.getKakaoToken(authorizationCode);
         } catch (HttpClientErrorException e) {

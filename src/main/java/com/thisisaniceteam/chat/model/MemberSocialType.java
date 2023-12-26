@@ -14,6 +14,7 @@ public enum MemberSocialType implements EnumModel {
 
     APPLE("APPLE"),
     KAKAO("KAKAO"),
+    NAVER("NAVER")
     ;
 
     private final String description;
