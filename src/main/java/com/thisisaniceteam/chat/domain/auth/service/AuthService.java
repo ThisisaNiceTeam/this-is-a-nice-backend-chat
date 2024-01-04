@@ -7,11 +7,10 @@ import com.thisisaniceteam.chat.model.dto.SocialSignUpRequest;
 import com.thisisaniceteam.chat.model.dto.SocialSignUpResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 
 public interface AuthService {
     Token getToken(String authorizationCode);
-    SocialSignUpResponse signUp(SocialSignUpRequest request, MultipartFile profileImage) throws IOException, Exception;
+    SocialSignUpResponse signUp(SocialSignUpRequest request, MultipartFile profileImage) throws Exception;
 
     LoginResponse login(LoginRequest request);
 
@@ -24,4 +23,6 @@ public interface AuthService {
     String getKakaoSocialId(String accessToken);
 
     String getNaverSocialId(String accessToken);
+
+    String getNaverName(String accessToken);
 }

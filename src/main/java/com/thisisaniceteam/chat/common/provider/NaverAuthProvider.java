@@ -1,6 +1,5 @@
 package com.thisisaniceteam.chat.common.provider;
 
-import com.thisisaniceteam.chat.common.client.kakao.dto.KakaoToken;
 import com.thisisaniceteam.chat.common.client.naver.NaverAuthApiClient;
 import com.thisisaniceteam.chat.common.client.naver.dto.NaverToken;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +23,9 @@ public class NaverAuthProvider implements AuthProvider{
         } catch (HttpClientErrorException e) {
             return null;
         }
+    }
+
+    public String getNaverName(String token) {
+        return naverAuthApiClient.getProfileInfo(token).getName();
     }
 }
