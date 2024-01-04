@@ -23,9 +23,10 @@ public class MessageController {
         String chatRoomId = chat.getChatRoomId();
         List<Member> membersInChatRoom = messageService.getMembersInChatRoom(chatRoomId);
         for (Member member : membersInChatRoom) {
-            if (!member.getMemberId().equals(Long.valueOf(chat.getSender()))) {
-                simpMessageSendingOperations.convertAndSend("/sub/channel/" + member.getMemberId(), chat);
-            }
+            simpMessageSendingOperations.convertAndSend("/sub/channel/" + member.getMemberId(), chat);
+//            if (!member.getMemberId().equals(Long.valueOf(chat.getSender()))) {
+//                simpMessageSendingOperations.convertAndSend("/sub/channel/" + member.getMemberId(), chat);
+//            }
         }
     }
 }

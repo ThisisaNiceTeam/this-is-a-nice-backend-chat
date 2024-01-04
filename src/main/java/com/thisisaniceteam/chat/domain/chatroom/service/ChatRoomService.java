@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ChatRoomService {
     // 대기 중인 채팅방에 해당 회원 추가하기
-    MemberChatRoom MemberToChatRoom(ChatRoom chatRoom, Member member);
+    MemberChatRoom memberToChatRoom(ChatRoom chatRoom, Member member);
 
     // 보유한 채팅방 모두 가져오기
     ArrayList<ChatRoom> getChatRoomList(Member member);
@@ -20,7 +20,7 @@ public interface ChatRoomService {
     Optional<ChatRoom> getWaitedChatRoom();
 
     // 채팅방 새롭게 생성하기
-    ChatRoom createChatRoom();
+    ChatRoom createChatRoom(Long memberId);
 
     // 채팅방 상태 전환 업데이트하기
     void updateChatRoomState(ChatRoom chatRoom);
