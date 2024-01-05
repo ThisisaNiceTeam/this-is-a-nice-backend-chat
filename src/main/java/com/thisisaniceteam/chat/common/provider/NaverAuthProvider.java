@@ -26,6 +26,6 @@ public class NaverAuthProvider implements AuthProvider{
     }
 
     public String getNaverName(String token) {
-        return naverAuthApiClient.getProfileInfo(token).getName();
+        return naverAuthApiClient.getProfileInfo("Bearer " + token).getResponse().getName();
     }
 }
