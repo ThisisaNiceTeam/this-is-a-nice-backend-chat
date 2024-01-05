@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,8 +52,6 @@ public class AuthController {
             )) String authorizationCode
     ) {
         log.info(authorizationCode);
-        Map<String, Object> response = new HashMap<>();
-        HttpStatus status = null;
         Token token = authService.getToken(authorizationCode);
         // 3 인가 코드로 발급이 불가능한 경우
         if (token == null) {
@@ -90,11 +87,10 @@ public class AuthController {
     // 이상 Swagger 코드
     @PostMapping("/social-signup")
     public ResponseEntity<?> signUp(
-            @Valid @RequestPart @Parameter(required = true, description = "회원 가입에 필요한 추가 정보입니다. 인가 코드 전달을 통해 받은 토큰을 함께 전달합니다.")
-            SocialSignUpRequest socialSignUpRequest,
-            @RequestPart(required = false) @Parameter(required = false, description = "프로필 사진입니다.") MultipartFile profileImage
+            @Valid @RequestBody @Parameter(required = true, description = "회원 가입에 필요한 추가 정보입니다. 인가 코드 전달을 통해 받은 토큰을 함께 전달합니다.")
+            SocialSignUpRequest socialSignUpRequest
     ) throws Exception {
-        SocialSignUpResponse socialSignUpResponse = authService.signUp(socialSignUpRequest, profileImage);
+        SocialSignUpResponse socialSignUpResponse = authService.signUp(socialSignUpRequest);
         return ResponseEntity.ok(socialSignUpResponse);
     }
 

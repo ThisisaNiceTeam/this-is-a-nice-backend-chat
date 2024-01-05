@@ -5,12 +5,11 @@ import com.thisisaniceteam.chat.model.dto.LoginRequest;
 import com.thisisaniceteam.chat.model.dto.LoginResponse;
 import com.thisisaniceteam.chat.model.dto.SocialSignUpRequest;
 import com.thisisaniceteam.chat.model.dto.SocialSignUpResponse;
-import org.springframework.web.multipart.MultipartFile;
 
 
 public interface AuthService {
     Token getToken(String authorizationCode);
-    SocialSignUpResponse signUp(SocialSignUpRequest request, MultipartFile profileImage) throws Exception;
+    SocialSignUpResponse signUp(SocialSignUpRequest request) throws Exception;
 
     LoginResponse login(LoginRequest request);
 

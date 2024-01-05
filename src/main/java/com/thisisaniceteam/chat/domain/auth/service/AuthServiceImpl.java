@@ -18,7 +18,6 @@ import com.thisisaniceteam.chat.utils.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -41,10 +40,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public SocialSignUpResponse signUp(SocialSignUpRequest socialSignUpRequest, MultipartFile profileImage) throws Exception {
+    public SocialSignUpResponse signUp(SocialSignUpRequest socialSignUpRequest) throws Exception {
         AuthProvider authProvider = authProviderFinder.findAuthProvider(socialSignUpRequest.getSocialType());
         String socialId = authProvider.getSocialId(socialSignUpRequest.getToken());
-        Member member = memberService.registerMember(socialSignUpRequest.toCreateMemberRequest(socialId), profileImage);
+        Member member = memberService.registerMember(socialSignUpRequest.toCreateMemberRequest(socialId));
         String accessToken = jwtUtil.createAccessToken(String.valueOf(member.getMemberId()));
         String refreshToken = jwtUtil.createRefreshToken(String.valueOf(member.getMemberId()));
         createRefreshToken(member.getMemberId(), refreshToken);
