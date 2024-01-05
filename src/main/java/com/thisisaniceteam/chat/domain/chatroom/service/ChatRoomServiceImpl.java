@@ -1,6 +1,7 @@
 package com.thisisaniceteam.chat.domain.chatroom.service;
 
 import com.thisisaniceteam.chat.domain.chatroom.repository.ChatRoomRepository;
+import com.thisisaniceteam.chat.domain.member.repository.MemberRepository;
 import com.thisisaniceteam.chat.domain.memberchatroom.service.MemberChatRoomService;
 import com.thisisaniceteam.chat.model.*;
 import com.thisisaniceteam.chat.model.dto.Chat;
@@ -22,10 +23,11 @@ import java.util.Set;
 @Transactional
 public class ChatRoomServiceImpl implements ChatRoomService{
     private final ChatRoomRepository chatRoomRepository;
+    private final MemberRepository memberRepository;
     private final MemberChatRoomService memberChatRoomService;
 
     @Override
-    public MemberChatRoom MemberToChatRoom(ChatRoom chatRoom, Member member) {
+    public MemberChatRoom memberToChatRoom(ChatRoom chatRoom, Member member) {
         return memberChatRoomService.createMemberChatRoom(member, chatRoom);
     }
 
@@ -47,8 +49,10 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     }
 
     @Override
-    public ChatRoom createChatRoom() {
-        return chatRoomRepository.save(ChatRoom.createChatRoom());
+    public ChatRoom createChatRoom(Long memberId) {
+        ChatRoom chatRoom = chatRoomRepository.save(ChatRoom.createChatRoom());
+        memberChatRoomService.createMemberChatRoom(memberRepository.findById(memberId).get(), chatRoom);
+        return chatRoom;
     }
 
     @Override

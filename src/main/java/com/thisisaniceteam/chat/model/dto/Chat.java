@@ -10,6 +10,7 @@ import lombok.*;
 public class Chat {
     private String type;
     private String sender;
+    private String chatRoomId;
     private String receiver;
     private Object message;
 
