@@ -1,8 +1,8 @@
 package com.thisisaniceteam.chat.domain.auth.service;
 
 import com.thisisaniceteam.chat.common.client.dto.Token;
-import com.thisisaniceteam.chat.common.client.kakao.dto.KakaoToken;
 import com.thisisaniceteam.chat.common.provider.AuthProvider;
+import com.thisisaniceteam.chat.common.provider.NaverAuthProvider;
 import com.thisisaniceteam.chat.domain.auth.provider.AuthProviderFinder;
 import com.thisisaniceteam.chat.domain.member.repository.MemberRepository;
 import com.thisisaniceteam.chat.domain.member.service.MemberService;
@@ -18,9 +18,7 @@ import com.thisisaniceteam.chat.utils.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -42,10 +40,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public SocialSignUpResponse signUp(SocialSignUpRequest socialSignUpRequest, MultipartFile profileImage) throws Exception {
+    public SocialSignUpResponse signUp(SocialSignUpRequest socialSignUpRequest) throws Exception {
         AuthProvider authProvider = authProviderFinder.findAuthProvider(socialSignUpRequest.getSocialType());
         String socialId = authProvider.getSocialId(socialSignUpRequest.getToken());
-        Member member = memberService.registerMember(socialSignUpRequest.toCreateMemberRequest(socialId), profileImage);
+        Member member = memberService.registerMember(socialSignUpRequest.toCreateMemberRequest(socialId));
         String accessToken = jwtUtil.createAccessToken(String.valueOf(member.getMemberId()));
         String refreshToken = jwtUtil.createRefreshToken(String.valueOf(member.getMemberId()));
         createRefreshToken(member.getMemberId(), refreshToken);
@@ -93,5 +91,11 @@ public class AuthServiceImpl implements AuthService {
     public String getNaverSocialId(String accessToken) {
         AuthProvider authProvider = authProviderFinder.findAuthProvider(MemberSocialType.NAVER);
         return authProvider.getSocialId(accessToken);
+    }
+
+    @Override
+    public String getNaverName(String accessToken) {
+        NaverAuthProvider naverAuthProvider = (NaverAuthProvider) authProviderFinder.findAuthProvider(MemberSocialType.NAVER);
+        return naverAuthProvider.getNaverName(accessToken);
     }
 }
