@@ -17,8 +17,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry
                 .addHandler(webSocketHandler, "/room")
-                .setAllowedOrigins("*");
-//                .addInterceptors(handShakeInterceptor)
+                .setAllowedOrigins("*")
+                .addInterceptors(handShakeInterceptor);
 //                .setAllowedOrigins("*")
 //                .withSockJS();
     }
