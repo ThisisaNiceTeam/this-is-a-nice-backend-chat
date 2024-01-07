@@ -24,4 +24,10 @@ public class WebSocketServiceImpl implements WebSocketService{
     public void updateAll(List<WebSocket> webSockets) {
         webSocketRepository.saveAll(webSockets);
     }
+
+    @Override
+    public WebSocket createWebSocket(String sessionId) {
+        WebSocket webSocket = WebSocket.createWebSocket(sessionId);
+        return webSocketRepository.save(webSocket);
+    }
 }
