@@ -65,20 +65,20 @@ public class ChatRoomServiceImpl implements ChatRoomService{
         return chatRoomRepository.findById(chatRoomId);
     }
 
-    @Override
-    public List<Long> getWebSocketSessionIdInUse(Long chatRoomId, Chat chat) {
-        ArrayList<Long> sessionIdList = new ArrayList<>();
-        ChatRoom chatRoom = chatRoomRepository.getChatRoomWithWebSocketSessions(chatRoomId);
-        Set<WebSocket> webSockets = chatRoom.getWebSockets();
-
-        if (!webSockets.isEmpty()) {
-            for (WebSocket webSocket : webSockets) {
-                if (!webSocket.getWebSocketId().equals(Long.parseLong(chat.getSender())) & webSocket.getWebSocketState().equals(WebSocketState.USE)) {
-                    sessionIdList.add(webSocket.getWebSocketId());
-                }
-            }
-        }
-
-        return sessionIdList;
-    }
+//    @Override
+//    public List<Long> getWebSocketSessionIdInUse(Long chatRoomId, Chat chat) {
+//        ArrayList<Long> sessionIdList = new ArrayList<>();
+//        ChatRoom chatRoom = chatRoomRepository.getChatRoomWithWebSocketSessions(chatRoomId);
+//        Set<WebSocket> webSockets = chatRoom.getWebSockets();
+//
+//        if (!webSockets.isEmpty()) {
+//            for (WebSocket webSocket : webSockets) {
+//                if (!webSocket.getWebSocketId().equals(Long.parseLong(chat.getSender())) & webSocket.getWebSocketState().equals(WebSocketState.USE)) {
+//                    sessionIdList.add(webSocket.getWebSocketId());
+//                }
+//            }
+//        }
+//
+//        return sessionIdList;
+//    }
 }
