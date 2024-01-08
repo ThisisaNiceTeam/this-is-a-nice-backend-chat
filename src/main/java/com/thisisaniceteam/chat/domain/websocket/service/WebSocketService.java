@@ -8,4 +8,6 @@ public interface WebSocketService {
     List<WebSocket> getAllBySessionId(String sessionId);
 
     void updateAll(List<WebSocket> webSockets);
+
+    WebSocket createWebSocket(String sessionId);
 }
