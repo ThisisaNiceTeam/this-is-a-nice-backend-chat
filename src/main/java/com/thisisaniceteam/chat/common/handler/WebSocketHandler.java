@@ -7,6 +7,7 @@ import com.thisisaniceteam.chat.domain.message.service.MessageService;
 import com.thisisaniceteam.chat.domain.websocket.service.WebSocketService;
 import com.thisisaniceteam.chat.model.dto.Chat;
 import com.thisisaniceteam.chat.model.entity.ChatRoom;
+import com.thisisaniceteam.chat.model.entity.Member;
 import com.thisisaniceteam.chat.model.entity.Message;
 import com.thisisaniceteam.chat.model.entity.WebSocket;
 import com.thisisaniceteam.chat.utils.ChatUtil;
@@ -45,17 +46,27 @@ public class WebSocketHandler extends TextWebSocketHandler {
          * 한 채팅방에는 2명의 인원이 있지만 여러 기기를 통해 세션이 여러 개 일 수 있다. 따라서 모든 세션에 메시지를 전송해준다.
          * DB에 저장하는 건 한 번만 저장해준다.
          */
+
+        /**
+         * 1. 채팅을 보낸 사용자가 보낸 메시지가 도착할 채팅방에 사용자가 포함되어 있는 지 확인
+         * 2. 포함되어 있다면 해당 채팅방에 포함된 웹소켓에 메시지를 전송해준다. (본인제외)
+         * 3. 해당 채팅방에 메시지를 저장해준다.
+         */
         Chat chat = ChatUtil.getObject(textMessage.getPayload());
-        chat.setSender(session.getId());
+        String memberId = (String) session.getAttributes().get("memberId");
+        ChatRoom chatRoom = chatRoomService.getChatRoomById(Long.valueOf(chat.getChatRoomId())).get();
+        Member member = memberService.getMemberByMemberId(Long.valueOf(memberId)).get();
 
-//        List<Long> webSocketSessionIdInUse = chatRoomService.getWebSocketSessionIdInUse(Long.parseLong(chat.getReceiver()), chat);
-//
-//        for (Long sessionId : webSocketSessionIdInUse) {
-//            sessionMap.get(String.valueOf(sessionId)).sendMessage(new TextMessage(ChatUtil.getString(chat)));
-//        }
+        if (chatRoomService.checkMemberInRoom(chatRoom, member)) {
+            ArrayList<String> sessionIds = chatRoomService.getWebSocketSessionIdInChatRoom(chatRoom);
+            for (String sessionId : sessionIds) {
+                if(sessionId.equals(session.getId())) continue;
 
-        Message message = Message.createMessage(1L, Long.parseLong(chat.getReceiver()));
-        messageService.createMessage(message);
+                sessionMap.get(sessionId).sendMessage(new TextMessage(ChatUtil.getString(chat)));
+            }
+        }
+
+        messageService.createMessage(Long.valueOf(memberId), chatRoom, chat.getMessage());
     }
 
 
