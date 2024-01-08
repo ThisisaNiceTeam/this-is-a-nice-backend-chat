@@ -3,12 +3,10 @@ package com.thisisaniceteam.chat.domain.chatroom.service;
 import com.thisisaniceteam.chat.domain.chatroom.repository.ChatRoomRepository;
 import com.thisisaniceteam.chat.domain.member.repository.MemberRepository;
 import com.thisisaniceteam.chat.domain.memberchatroom.service.MemberChatRoomService;
+import com.thisisaniceteam.chat.domain.websocket.repository.WebSocketRepository;
 import com.thisisaniceteam.chat.model.*;
 import com.thisisaniceteam.chat.model.dto.Chat;
-import com.thisisaniceteam.chat.model.entity.ChatRoom;
-import com.thisisaniceteam.chat.model.entity.Member;
-import com.thisisaniceteam.chat.model.entity.MemberChatRoom;
-import com.thisisaniceteam.chat.model.entity.WebSocket;
+import com.thisisaniceteam.chat.model.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +23,7 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
     private final MemberChatRoomService memberChatRoomService;
+    private final WebSocketRepository webSocketRepository;
 
     @Override
     public MemberChatRoom memberToChatRoom(ChatRoom chatRoom, Member member) {
@@ -63,6 +62,22 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     @Override
     public Optional<ChatRoom> getChatRoomById(Long chatRoomId) {
         return chatRoomRepository.findById(chatRoomId);
+    }
+
+    @Override
+    public boolean checkMemberInRoom(ChatRoom chatRoom, Member member) {
+        return chatRoomRepository.checkMemberInRoom(chatRoom.getChatRoomId(), member.getMemberId());
+    }
+
+    @Override
+    public ArrayList<String> getWebSocketSessionIdInChatRoom(ChatRoom chatRoom) {
+        ArrayList<String> result = new ArrayList<>();
+        ArrayList<WebSocket> webSockets = webSocketRepository.getWebSockets(chatRoom.getChatRoomId());
+        for (WebSocket webSocket : webSockets) {
+            result.add(webSocket.getSessionId());
+        }
+
+        return result;
     }
 
 //    @Override

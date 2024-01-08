@@ -28,6 +28,11 @@ public interface ChatRoomService {
     // 해당 채팅방 가져오기
     Optional<ChatRoom> getChatRoomById(Long chatRoomId);
 
+    boolean checkMemberInRoom(ChatRoom chatRoom, Member member);
+
+    ArrayList<String> getWebSocketSessionIdInChatRoom(ChatRoom chatRoom);
+
+
 //    // 연결되어 있는 webSocketSession List 반환
 //    List<Long> getWebSocketSessionIdInUse(Long chatRoomId, Chat chat);
 
