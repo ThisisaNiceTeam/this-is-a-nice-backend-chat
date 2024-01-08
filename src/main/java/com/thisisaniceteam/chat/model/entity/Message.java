@@ -6,14 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(
-        name = "message", indexes = {
-        @Index(name = "chat_room_id", columnList = "chatRoomId"),
-        @Index(name = "member_id", columnList = "memberId")
-})
 @AllArgsConstructor
 @Builder
 public class Message extends BaseEntity {
@@ -21,14 +19,17 @@ public class Message extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL)
+    private List<ChatRoomMessage> chatRoomMessageList = new ArrayList<>();
+
     private Long memberId;
 
-    private Long chatRoomId;
+    private String contents;
 
-    public static Message createMessage(Long memberId, Long chatRoomId) {
+    public static Message createMessage(Long memberId, String contents) {
         return Message.builder()
                 .memberId(memberId)
-                .chatRoomId(chatRoomId)
+                .contents(contents)
                 .build();
     }
 }

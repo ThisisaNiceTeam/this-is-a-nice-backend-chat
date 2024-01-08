@@ -28,6 +28,9 @@ public class ChatRoom extends BaseEntity {
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private Set<ChatRoomWebSocket> chatRoomWebSockets = new HashSet<>();
 
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<ChatRoomMessage> chatRoomMessageList = new ArrayList<>();
+
     public static ChatRoom createChatRoom() {
         return new ChatRoomBuilder()
                 .roomState(RoomState.WAIT)
