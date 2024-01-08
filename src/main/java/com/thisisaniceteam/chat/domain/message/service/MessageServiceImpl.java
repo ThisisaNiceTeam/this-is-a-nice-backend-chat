@@ -1,5 +1,6 @@
 package com.thisisaniceteam.chat.domain.message.service;
 
+import com.thisisaniceteam.chat.domain.ChatRoomMessage.service.ChatRoomMessageService;
 import com.thisisaniceteam.chat.domain.chatroom.repository.ChatRoomRepository;
 import com.thisisaniceteam.chat.domain.message.repository.MessageRepository;
 import com.thisisaniceteam.chat.model.entity.ChatRoom;
@@ -21,10 +22,12 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomMessageService chatRoomMessageService;
 
     @Override
-    public void createMessage(Message message) {
-        messageRepository.save(message);
+    public void createMessage(Long memberId, ChatRoom chatRoom, String contents) {
+        Message message = messageRepository.save(Message.createMessage(memberId, contents));
+        chatRoomMessageService.createChatRoomMessage(chatRoom, message);
     }
 
     @Override
