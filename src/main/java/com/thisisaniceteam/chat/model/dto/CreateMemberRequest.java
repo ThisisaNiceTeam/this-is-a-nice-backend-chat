@@ -21,7 +21,6 @@ public class CreateMemberRequest {
     @NotNull
     private MemberSocialType socialType;
 
-    @Length(min = 1, max = 7)
     private String nickname;
     private String region;
     private String classRoom;
@@ -32,6 +31,6 @@ public class CreateMemberRequest {
     }
 
     public Member toEntity(FileUploadResponse fileUploadResponse) {
-        return Member.newMember(MemberSocialInfo.of(socialId, socialType), MemberProfile.of(fileUploadResponse.getFileUrl(), fileUploadResponse.getFileUrl()), SsafyInfo.of(region, classRoom, name));
+        return Member.newMember(MemberSocialInfo.of(socialId, socialType), MemberProfile.of(fileUploadResponse.getFileUrl(), fileUploadResponse.getFileUrl()), SsafyInfo.of(region, classRoom, name), nickname);
     }
 }
