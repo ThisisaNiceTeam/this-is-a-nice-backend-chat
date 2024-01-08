@@ -44,10 +44,12 @@ public class Member extends BaseEntity {
 
     public static Member newMember(MemberSocialInfo memberSocialInfo,
                                     MemberProfile memberProfile,
-                                    SsafyInfo ssafyInfo) {
+                                    SsafyInfo ssafyInfo,
+                                   String nickname) {
         return Member.builder()
                 .memberSocialInfo(memberSocialInfo)
                 .profile(memberProfile)
+                .nickname(nickname)
                 .ssafyInfo(ssafyInfo)
                 .build();
     }

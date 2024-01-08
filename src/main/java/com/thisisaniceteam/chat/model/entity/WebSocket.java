@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -24,9 +27,15 @@ public class WebSocket extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private WebSocketState webSocketState;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_room_id")
-    private ChatRoom chatRoom;
+    @OneToMany(mappedBy = "webSocket", cascade = CascadeType.ALL)
+    private List<ChatRoomWebSocket> chatRoomWebSocket = new ArrayList<>();
+
+    public static WebSocket createWebSocket(String sessionId) {
+        return WebSocket.builder()
+                .sessionId(sessionId)
+                .webSocketState(WebSocketState.USE)
+                .build();
+    }
 
     public void deleteWebSocket() {
         this.webSocketState = WebSocketState.DELETED;

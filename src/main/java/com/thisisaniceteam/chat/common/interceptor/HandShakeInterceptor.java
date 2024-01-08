@@ -1,6 +1,8 @@
 package com.thisisaniceteam.chat.common.interceptor;
 
+import com.thisisaniceteam.chat.utils.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -11,9 +13,11 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Component
 @Slf4j
 public class HandShakeInterceptor extends HttpSessionHandshakeInterceptor {
+    private final JWTUtil jwtUtil;
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
@@ -23,8 +27,11 @@ public class HandShakeInterceptor extends HttpSessionHandshakeInterceptor {
         // TODO
         if (request instanceof ServletServerHttpRequest servletServerHttpRequest) {
             HttpServletRequest servletRequest = servletServerHttpRequest.getServletRequest();
-            String memberId = servletRequest.getParameter("memberId");
-            attributes.put("memberId", memberId);
+            String token = servletRequest.getHeader("Authorization");
+            if (jwtUtil.checkToken(token)) {
+                String memberId = jwtUtil.getMemberId(token);
+                attributes.put("memberId", memberId);
+            }
         }
 
         return super.beforeHandshake(request, response, wsHandler, attributes);

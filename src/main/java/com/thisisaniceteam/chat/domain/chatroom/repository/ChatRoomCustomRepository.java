@@ -2,6 +2,7 @@ package com.thisisaniceteam.chat.domain.chatroom.repository;
 
 import com.thisisaniceteam.chat.model.entity.ChatRoom;
 import com.thisisaniceteam.chat.model.entity.Member;
+import com.thisisaniceteam.chat.model.entity.WebSocket;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -17,4 +18,6 @@ public interface ChatRoomCustomRepository {
     Optional<ChatRoom> getWaitedChatRoom();
 
     ChatRoom getChatRoomWithWebSocketSessions(Long chatRoomId);
+
+    boolean checkMemberInRoom(Long chatRoomId, Long memberId);
 }
